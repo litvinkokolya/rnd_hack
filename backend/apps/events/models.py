@@ -9,6 +9,10 @@ class Achievement(models.Model):
     image = models.ImageField(upload_to="achievement_images", null=True, blank=True)
     name = models.CharField(max_length=50, null=True, blank=True)
 
+    class Meta:
+        verbose_name = "Достижение"
+        verbose_name_plural = "Достижения"
+
 
 class Event(models.Model):
     FOR_WHOM_CHOICES = [
@@ -34,6 +38,10 @@ class Event(models.Model):
                                            related_name='event_achiev_member')
     is_finished = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = "Челлендж"
+        verbose_name_plural = "Челленджи"
+
     def find_winner(self):
         results = Result.objects.filter(work__event=self)
         #TODO: дописать когда будет известно что будет приходить в result.result
@@ -46,12 +54,19 @@ class Event(models.Model):
             else:
                 member.user.achievements.add(self.achievement_member)
 
+    def __str__(self) -> str:
+        return self.name if self.name else 'Укажи name!!!'
+
 
 class Member(models.Model):
     user = models.ForeignKey('users.User', on_delete=models.PROTECT, null=True, blank=True, related_name='member')
     event = models.ForeignKey('Event', on_delete=models.PROTECT, null=True, blank=True, related_name='member')
     winner = models.BooleanField(default=False)
     joined_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Участник"
+        verbose_name_plural = "Участники"
 
     def save(self, *args, **kwargs):
         if self.event.member.count() >= self.event.max_members:
@@ -66,10 +81,18 @@ class Work(models.Model):
     event = models.ForeignKey("Event", on_delete=models.SET_NULL, null=True, blank=True, related_name='work')
     member = models.ForeignKey("Member", on_delete=models.SET_NULL, null=True, blank=True, related_name='work')
 
+    class Meta:
+        verbose_name = "Работа"
+        verbose_name_plural = "Работы"
+
 
 class ImagesWork(models.Model):
     image = models.ImageField(upload_to="work_images", null=True, blank=True)
     work = models.ForeignKey("Work", on_delete=models.PROTECT, null=True, blank=True, related_name='images_work')
+
+    class Meta:
+        verbose_name = "Картинка работы"
+        verbose_name_plural = "Картинки работ"
 
     def save(self, *args, **kwargs):
         if self.pk is None:
@@ -91,6 +114,10 @@ class Result(models.Model):
     work = models.ForeignKey('Work', on_delete=models.PROTECT, blank=True, null=True, related_name='result')
     reviewer = models.ForeignKey('Member', on_delete=models.PROTECT, blank=True, null=True, related_name='result')
     score = ArrayField(models.CharField(max_length=5000), blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Результат"
+        verbose_name_plural = "Результаты"
 
 
 @receiver(post_save, sender=Event)
