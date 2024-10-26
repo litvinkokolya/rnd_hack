@@ -22,11 +22,17 @@
      venv\Scripts\activate
      ```
 
-3. **Navigate to the Scripts Directory and Activate `init_backend`:**
+3. **Navigate to the scripts directory and activate `init_backend`:**
    ```sh
    cd scripts
    ./init_backend
    ```
+
+4. **Create .env files in `backend` and `telegram bot` Directories:**
+   ```
+   See examples (.env.example) in directories!
+   ```
+
 
 ## Frontend
 

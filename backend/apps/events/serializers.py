@@ -46,6 +46,28 @@ class WorkSerializer(serializers.ModelSerializer):
     member = MemberSerializer()
     preview = serializers.SerializerMethodField()
     result_sum = serializers.IntegerField(source="result_all", read_only=True)
+    is_mine = serializers.SerializerMethodField()
+    is_my_mark = serializers.SerializerMethodField()
+
+    def get_is_mine(self, obj) -> bool:
+        user = self.context.get("request").user
+        work = obj
+        if Work.objects.filter(
+            pk=work.pk, member__user=user
+        ).exists():
+            return True
+        else:
+            return False
+
+    def get_is_my_mark(self, obj) -> bool:
+        user = self.context.get("request").user
+        work = obj
+        if Result.objects.filter(
+            work__pk=work.pk, reviewer__user=user
+        ).exists():
+            return True
+        else:
+            return False
 
     class Meta:
         model = Work
