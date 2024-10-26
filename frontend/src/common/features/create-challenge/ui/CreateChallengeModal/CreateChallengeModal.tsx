@@ -21,7 +21,7 @@ export const CreateChallengeModal = ({
             transition={{ duration: 0.2 }}
             className={styles.modal_exit}
           >
-            <CreateChallengeForm />
+            <CreateChallengeForm onClose={onClose} />
           </motion.div>
         </>
       )}

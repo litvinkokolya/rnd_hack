@@ -55,3 +55,14 @@
     margin-top: 60px;
   }
 }
+
+.create {
+  margin: 10px 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  button {
+    background-color: #ffe05592;
+    border: 2px solid #ffe055;
+  }
+}

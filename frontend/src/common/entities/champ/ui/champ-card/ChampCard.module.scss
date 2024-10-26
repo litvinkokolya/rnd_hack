@@ -1,3 +1,5 @@
+@import "../../../../shared/styles/variables.scss";
+
 .champs {
   &__btn {
     border: 0;
@@ -23,11 +25,11 @@
     }
 
     &_active {
-      border: 2px solid #ff006b;
+      border: 2px solid $grey;
     }
 
     &:hover:not(:disabled) {
-      border: 2px solid #ff006b;
+      border: 2px solid #ffa200;
       transform: scale(1.03);
     }
 

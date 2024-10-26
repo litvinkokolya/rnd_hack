@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { userAtom } from "store";
 import { useAtomValue } from "jotai";
 import { useEffect } from "react";
-import Head from "next/head";
+import { ToastContainer } from "react-toast";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const user = useAtomValue(userAtom);
@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Component {...pageProps} />
+      <ToastContainer delay={3000} />
     </QueryClientProvider>
   );
 }

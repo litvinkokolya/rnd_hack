@@ -48,6 +48,8 @@
     "react-phone-input-2": "^2.15.1",
     "react-query": "^3.39.3",
     "react-tag-input": "^6.10.3",
+    "react-toast": "^1.0.3",
+    "react-toastify": "^10.0.6",
     "remove": "^0.1.5",
     "sass": "^1.69.7",
     "yup": "^1.4.0"

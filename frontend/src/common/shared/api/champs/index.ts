@@ -1,13 +1,16 @@
-import { axiosInstanse } from '../instanse';
-import { ENDPOINTS } from '../endpoints';
-import { AxiosPromise } from 'axios';
-import { IChamp, IChampNominationsCategories } from 'common/entities/champ';
+import { axiosInstanse } from "../instanse";
+import { ENDPOINTS } from "../endpoints";
+import { AxiosPromise } from "axios";
+import { IChamp, IChampNominationsCategories } from "common/entities/champ";
+
+export const createChallenge = (params: any): AxiosPromise<IChamp[]> =>
+  axiosInstanse.post(ENDPOINTS.EVENTS.CHAMP, params);
+
+export const getChamp = (idChamp: number): AxiosPromise<IChamp> =>
+  axiosInstanse.get(ENDPOINTS.EVENTS.CHAMP + idChamp + "/");
 
 export const getChamps = (): AxiosPromise<IChamp[]> =>
   axiosInstanse.get(ENDPOINTS.EVENTS.CHAMP);
-
-export const getChamp = (idChamp: number): AxiosPromise<IChamp> =>
-  axiosInstanse.get(ENDPOINTS.EVENTS.CHAMP + idChamp);
 
 export const getChampWinnersNominations = (
   idChamp: number

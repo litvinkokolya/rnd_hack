@@ -1,11 +1,11 @@
-import { ChampCard, ChampCardSkeleton } from 'common/entities/champ';
-import { getChamps } from 'common/shared/api/champs';
-import { useQuery } from 'react-query';
-import styles from './Champs-list.module.scss';
-import { AnimatePresence, motion } from 'framer-motion';
+import { ChampCard, ChampCardSkeleton } from "common/entities/champ";
+import { getChamps } from "common/shared/api/champs";
+import { useQuery } from "react-query";
+import styles from "./Champs-list.module.scss";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const ChampsList = ({ disableChamps }: { disableChamps: boolean }) => {
-  const { data: champsData, isLoading } = useQuery('champs', getChamps);
+  const { data: champsData, isLoading } = useQuery("champs", getChamps);
 
   if (isLoading) {
     return (
@@ -23,7 +23,7 @@ export const ChampsList = ({ disableChamps }: { disableChamps: boolean }) => {
 
   return (
     <>
-      <h3>Доступные Чемпионаты:</h3>
+      <h3>Доступные Челленджи:</h3>
       <ul className={styles.champs__list}>
         {champsData?.data?.map((champ, index) => {
           return (

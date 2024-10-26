@@ -169,11 +169,9 @@ export const ProfileEditForm: FC = () => {
               )}
             />
           </div>
-          <p>
+          <p className={styles.create}>
             Создать челлендж -
-            <Button className={""} onClick={() => setIsCreateModalOpen(true)}>
-              ➕
-            </Button>
+            <Button onClick={() => setIsCreateModalOpen(true)}>➕</Button>
           </p>
           <CreateChallengeModal
             isOpen={isCreateModalOpen}

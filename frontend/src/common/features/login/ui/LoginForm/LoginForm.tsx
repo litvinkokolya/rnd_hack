@@ -156,7 +156,9 @@ export const LoginForm = () => {
                   />
                 )}
               />
-              <Button loading={verifyCodeMutation.isLoading}>ВОЙТИ</Button>
+              <Button type="submit" loading={verifyCodeMutation.isLoading}>
+                ВОЙТИ
+              </Button>
               {verifyCodeMutation.isLoading && <Loader />}
             </form>
           </motion.div>
@@ -187,7 +189,11 @@ export const LoginForm = () => {
               </Link>
             </p>
 
-            <Button disabled={!agreement} loading={loginUserMutation.isLoading}>
+            <Button
+              type="submit"
+              disabled={!agreement}
+              loading={loginUserMutation.isLoading}
+            >
               Получить код
             </Button>
             {loginUserMutation.isLoading && <Loader />}

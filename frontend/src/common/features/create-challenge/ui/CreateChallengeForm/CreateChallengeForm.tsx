@@ -10,14 +10,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "common/shared/ui/button";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { createChallenge as createChallengeRequest } from "common/shared/api/champs";
+import { useMutation } from "react-query";
+import { toast } from "react-toast";
 
 const validationSchema = yup.object().shape({
-  title: yup.string().required("Заголовок челленджа обязателен"),
+  name: yup.string().required("Заголовок челленджа обязателен"),
   description: yup.string().required("Описание челленджа обязательно"),
   forWho: yup.string().required("Выберите для себя или для группы"),
   photoCount: yup.string().required("Количество фото обязательно"),
   video: yup.string().required("Выберите да или нет"),
-  challengeImage: yup.mixed().required("Изображение челленджа обязательно"),
+  image: yup.mixed().required("Изображение челленджа обязательно"),
   maxParticipants: yup.mixed(),
   participantAchievement: yup.mixed(),
   participantPrize: yup.mixed(),
@@ -26,7 +29,55 @@ const validationSchema = yup.object().shape({
   winnerPrize: yup.mixed(),
 });
 
-export const CreateChallengeForm = () => {
+export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
+  const createChallenge = async (params: any) => {
+    try {
+      const { data } = await createChallengeRequest(params);
+      return data;
+    } catch (error) {
+      // Обработка ошибки
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const createChallengeMutation = useMutation(
+    ["challenge"],
+    async (data: any) => {
+      return await createChallenge(data);
+    }
+  );
+
+  const onSubmit = async (data: any) => {
+    const params = {
+      ...data,
+      tags: challengeTags.map((tag) => tag.id),
+      criteries: evaluationCriteriaTags.map((tag) => tag.id),
+      end_date: data.endDate ? data.endDate.toISOString().split("T")[0] : null,
+      is_video: data.video === "dontVideo" ? false : true,
+      count_photo: data.photoCount,
+      for_whom: data.forWho,
+    };
+    const formData = new FormData();
+    formData.append("image", params.image);
+
+    Object.keys(params).forEach((key) => {
+      if (key !== "image") {
+        if (Array.isArray(params[key])) {
+          params[key].forEach((value) => {
+            formData.append(key, value);
+          });
+        } else {
+          formData.append(key, params[key]);
+        }
+      }
+    });
+
+    await createChallengeMutation.mutateAsync(formData);
+    onClose();
+    toast.success("Челлендж успешно создан!");
+  };
+
   const [challengeTags, setChallengeTags] = useState<Array<Tag>>([]);
   const [evaluationCriteriaTags, setEvaluationCriteriaTags] = useState<
     Array<Tag>
@@ -85,18 +136,13 @@ export const CreateChallengeForm = () => {
   });
   console.log(errors);
 
-  const onSubmit = async (data: any) => {
-    // Обработка данных формы после отправки
-    console.log(data, challengeTags, evaluationCriteriaTags);
-  };
-
   return (
     <div className={styles.modal}>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Controller
             control={control}
-            name="title"
+            name="name"
             render={({ field }) => (
               <>
                 <label className={styles.label}>
@@ -147,7 +193,7 @@ export const CreateChallengeForm = () => {
           <Controller
             control={control}
             name="forWho"
-            defaultValue={"self"}
+            defaultValue={"1"}
             render={({ field }) => (
               <>
                 <label className={styles.label}>
@@ -156,17 +202,17 @@ export const CreateChallengeForm = () => {
                 <div>
                   <input
                     type="radio"
-                    value="self"
+                    value="1"
                     onChange={field.onChange}
-                    checked={field.value === "self"}
+                    checked={field.value === "1"}
                   />
                   <label>Для себя</label>
                   <br />
                   <input
                     type="radio"
-                    value="group"
+                    value="2"
                     onChange={field.onChange}
-                    checked={field.value === "group"}
+                    checked={field.value === "2"}
                   />
                   <label>Для группы людей</label>
                 </div>
@@ -293,14 +339,20 @@ export const CreateChallengeForm = () => {
           />
           <Controller
             control={control}
-            name="challengeImage"
+            name="image"
             render={({ field }) => (
               <>
                 <label className={styles.label}>
                   Изображение челленджа: <span style={{ color: "red" }}>*</span>
                 </label>
-                {/* @ts-ignore */}
-                <input type="file" {...field} />
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.target.files ? e.target.files[0] : null;
+                    console.log(file);
+                    field.onChange(file);
+                  }}
+                />
               </>
             )}
           />
