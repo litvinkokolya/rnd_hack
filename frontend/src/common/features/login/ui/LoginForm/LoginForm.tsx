@@ -17,6 +17,7 @@ import PhoneInput from "common/shared/ui/phone-input/PhoneInput";
 import { motion, AnimatePresence } from "framer-motion";
 import { Checkbox } from "common/shared/ui/checkbox";
 import Link from "next/link";
+import { toast } from "react-toast";
 
 export const LoginForm = () => {
   const [showCodePage, setShowCodePage] = useState(false);
@@ -65,6 +66,7 @@ export const LoginForm = () => {
 
         return data;
       } catch (error) {
+        toast.error("Непредвиденная ошибка!");
         // Обработка ошибки
         console.error(error);
         throw error;

@@ -6,6 +6,8 @@ import { setMember } from "common/shared/api/members";
 import { useAtomValue } from "jotai";
 import { userAtom } from "store";
 import { toast } from "react-toast";
+import { useRouter } from "next/router";
+
 export const ShowChallenge = ({
   isOpen,
   onClose,
@@ -15,7 +17,9 @@ export const ShowChallenge = ({
   onClose: () => void;
   champ: any;
 }) => {
+  const router = useRouter();
   const user = useAtomValue(userAtom);
+
   isOpen && console.log(champ);
 
   const setMemberChallenge = async (params: any) => {
@@ -26,6 +30,7 @@ export const ShowChallenge = ({
       return data;
     } catch (error) {
       // Обработка ошибки
+      toast.error("Непредвиденная ошибка!");
       console.error(error);
       throw error;
     }
@@ -97,9 +102,23 @@ export const ShowChallenge = ({
                 </label>
               </div>
             </div>
-            <Button onClick={() => loginUserMutation.mutate()}>
-              Принять участие
-            </Button>
+            {champ.is_participation ? (
+              <>
+                <p>Вы являетесь участником!</p>
+                <Button
+                  onClick={() => {
+                    setSelectedChamp(champ);
+                    router.push("./profile");
+                  }}
+                >
+                  Перейти в челлендж
+                </Button>
+              </>
+            ) : (
+              <Button onClick={() => loginUserMutation.mutate()}>
+                Принять участие
+              </Button>
+            )}
           </motion.div>
         </>
       )}

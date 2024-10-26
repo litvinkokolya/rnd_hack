@@ -36,6 +36,7 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
       return data;
     } catch (error) {
       // Обработка ошибки
+      toast.error("Непредвиденная ошибка!");
       console.error(error);
       throw error;
     }
