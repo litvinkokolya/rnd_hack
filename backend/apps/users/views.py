@@ -1,64 +1,50 @@
 from django.db.models import Q
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from apps.users.models import User, VerificationCode
-from apps.users.serializers import UserSerializer, PhoneNumberSerializer, VerifyCodeSerializer
+from apps.users.models import User
+from apps.users.serializers import UserSerializer, LoginSerializer
 from apps.users.smsc_api import send_sms
-from apps.users.utils import generate_code
+from apps.users.utils import generate_password
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = []
 
-    @action(methods=["post"], detail=False, serializer_class=UserSerializer, permission_classes=[AllowAny])
-    def create_user(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    @action(methods=["post"], detail=False, serializer_class=PhoneNumberSerializer, permission_classes=[AllowAny])
-    def send_sms(self, request, *args, **kwargs):
-        serializer = PhoneNumberSerializer(data=request.data)
+    @action(
+        detail=False,
+        methods=["post"],
+        serializer_class=LoginSerializer,
+        permission_classes=[AllowAny],
+    )
+    def login_in(self, request, *args, **kwargs):
+        serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         phone_number = serializer.data["phone_number"]
-
-        # Генерация и отправка кода
-        random_number = generate_code()
-        send_sms(phone_number, random_number)
-
-        # Сохранение кода в базе данных
-        VerificationCode.objects.update_or_create(
-            phone_number=phone_number,
-            code=random_number
+        if phone_number:
+            user = User.objects.filter(Q(phone_number=phone_number)).first()
+            if user is None:
+                user = User.objects.create(phone_number=phone_number)
+            if user.is_superuser:
+                return Response({"success": "Успешно!"})
+            else:
+                random_number = generate_password()
+                send_sms(phone_number, random_number)
+                user.set_password(random_number)
+                user.save()
+                return Response({"success": "Успешно!"})
+        return ValidationError(
+            detail="Номер введён неверно", code=status.HTTP_400_BAD_REQUEST
         )
 
-        return Response({'message': 'Успешно'})
-
-    @action(methods=["post"], detail=False, serializer_class=VerifyCodeSerializer, permission_classes=[AllowAny])
-    def verify_code(self, request, *args, **kwargs):
-        serializer = VerifyCodeSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        phone_number = serializer.data["phone_number"]
-        code = serializer.data["code"]
-
-        try:
-            verification_code = VerificationCode.objects.get(phone_number=phone_number, code=code)
-            # Удалите код после успешной проверки, чтобы он не мог быть использован повторно
-            verification_code.delete()
-            return Response({'message': 'Код подтвержден'}, status=status.HTTP_200_OK)
-        except VerificationCode.DoesNotExist:
-            raise ValidationError(
-                detail="Неверный код подтверждения", code=status.HTTP_400_BAD_REQUEST
-            )
-
-    @action(detail=False, methods=["get", "patch"], permission_classes=[IsAuthenticated])
+    @action(
+        detail=False, methods=["get", "patch"], permission_classes=[IsAuthenticated]
+    )
     def me(self, request, *args, **kwargs):
         if request.method == "PATCH":
             serializer = UserSerializer(request.user, data=request.data, partial=True)

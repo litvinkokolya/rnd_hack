@@ -1,10 +1,14 @@
 from django.contrib import admin
-from django.urls import path, include
-from drf_spectacular.views import SpectacularSwaggerView, SpectacularRedocView, SpectacularAPIView
+from django.urls import include, path
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 api_urlpatterns_v1 = [
-    path('', include('apps.users.urls')),
+    path("", include("apps.users.urls")),
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
