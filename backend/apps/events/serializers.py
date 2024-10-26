@@ -46,14 +46,14 @@ class WorkSerializer(serializers.ModelSerializer):
     member = MemberSerializer()
     preview = serializers.SerializerMethodField()
     result_sum = serializers.IntegerField(source="result_all", read_only=True)
-    is_mine = serializers.SerializerMethodField()
+    is_filled_mine = serializers.SerializerMethodField()
     is_my_mark = serializers.SerializerMethodField()
 
-    def get_is_mine(self, obj) -> bool:
+    def get_is_filled_mine(self, obj) -> bool:
         user = self.context.get("request").user
         work = obj
         if Work.objects.filter(
-            pk=work.pk, member__user=user
+            pk=work.pk, member__user=user, images_work__isnull=False
         ).exists():
             return True
         else:
