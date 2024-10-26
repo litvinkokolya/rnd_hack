@@ -42,12 +42,28 @@ class MemberSerializer(serializers.ModelSerializer):
 
 
 class WorkSerializer(serializers.ModelSerializer):
+    event = EventSerializer()
+    member = MemberSerializer()
+
+    class Meta:
+        model = Work
+        fields = '__all__'
+
+
+class WorkCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Work
         fields = '__all__'
 
 
 class ImagesWorkSerializer(serializers.ModelSerializer):
+    work = WorkSerializer()
+    class Meta:
+        model = ImagesWork
+        fields = '__all__'
+
+
+class ImagesWorkCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImagesWork
         fields = '__all__'

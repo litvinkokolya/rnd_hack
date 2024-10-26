@@ -151,6 +151,7 @@ class Event(models.Model):
     def __str__(self) -> str:
         return self.name if self.name else 'Укажи name!!!'
 
+
 class Member(models.Model):
     user = models.ForeignKey(
         'users.User',
@@ -193,6 +194,7 @@ class Member(models.Model):
     def __str__(self):
         return f'{self.user} - {self.joined_at}'
 
+
 class Work(models.Model):
     event = models.ForeignKey(
         "Event",
@@ -216,6 +218,7 @@ class Work(models.Model):
     class Meta:
         verbose_name = "Работа"
         verbose_name_plural = "Работы"
+
 
 class ImagesWork(models.Model):
     image = models.ImageField(
