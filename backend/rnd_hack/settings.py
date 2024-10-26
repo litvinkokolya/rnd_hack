@@ -137,12 +137,15 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+# SMSC settings
 USERNAME_SMSC = env("USERNAME_SMSC", default="fake_user")
 PASSWORD_SMSC = env("PASSWORD_SMSC", default="fake_password")
 TOKEN_SMSC = env("TOKEN_SMSC", default="fake_token")
 DEFAULT_SENDER = "74956665610"
 
+# Telegram settings
+TELEGRAM_SECRET_KEY = env("SECRET_KEY_TELEGRAM")
+TELEGRAM_CHAT_ID = env("TELEGRAM_CHAT_ID") #TODO: поправить
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

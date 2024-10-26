@@ -214,6 +214,17 @@ class Work(models.Model):
         verbose_name="Участник",
         help_text="Выберите участника"
     )
+    url_video = models.TextField(default="", blank=True, verbose_name="Урл видео")
+    url_message_video = models.TextField(default="", blank=True, verbose_name="Урл сообщения")
+    is_done = models.BooleanField(default=False, verbose_name="Оценили ли все работу")
+
+    def save(self, *args, **kwargs):
+        if self.id:
+            if len(self.event.criteries) == (self.result.count() - 1):
+                self.is_done = True
+            else:
+                self.is_done = False
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Работа"
@@ -222,7 +233,7 @@ class Work(models.Model):
 
 class ImagesWork(models.Model):
     image = models.ImageField(
-        upload_to="work_images",
+        upload_to="images_work",
         null=True,
         blank=True,
         verbose_name="Изображение",
@@ -245,17 +256,18 @@ class ImagesWork(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None:
             # Количество фотографий в Work в момент сохранения новой фотографии
-            photos_count_work = self.work.image.count()
+            photos_count_work = self.work.images_work.count()
 
             # Количество фотографий в Event, относящейся к запрошенной MemberNomination
             photos_count_event = self.work.event.count_photo
 
             if photos_count_work >= photos_count_event:
-                return ValueError(
+                return ValidationError(
                     f"Максимум {photos_count_event} фотографии для данной работы."
                 )
 
         super().save(*args, **kwargs)
+
 
 class Result(models.Model):
     work = models.ForeignKey(
@@ -276,20 +288,31 @@ class Result(models.Model):
         verbose_name="Оценивающий",
         help_text="Выберите оценивающего"
     )
-    score = ArrayField(
-        models.CharField(max_length=5000),
-        blank=True,
-        null=True,
-        verbose_name="Оценка",
-        help_text="Введите оценку"
-    )
+    score = models.JSONField(default=None, null=True,
+                             verbose_name="Подробная оценка",
+                             help_text="Не трогать. Считается автоматически!"
+                             )
 
     class Meta:
         verbose_name = "Результат"
         verbose_name_plural = "Результаты"
+
 
 @receiver(post_save, sender=Event)
 def determine_achievements(sender, instance, created, **kwargs):
     if instance.is_finished:
         instance.find_winner()
         instance.give_achievements()
+
+
+@receiver(post_save, sender=Result)
+def save_works(sender, instance, created, **kwargs):
+    w = Work.objects.filter(pk=instance.work.pk).first()
+    if w:
+        w.save()
+
+# @receiver(post_save, sender=Work)
+# def save_url(sender, instance, **kwargs):
+#     if instance.url_video and not instance.url_message_video:
+#         integration = TelegramIntegration()
+#         integration.send_video_to_telegram_channel(instance)
