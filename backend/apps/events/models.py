@@ -54,7 +54,7 @@ class Member(models.Model):
     joined_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        if self.event.max_members >= self.event.member.count():
+        if self.event.member.count() >= self.event.max_members:
             raise ValidationError(f"Уже достаточное количество участников")
         super().save(*args, **kwargs)
 
