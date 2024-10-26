@@ -4,7 +4,7 @@ from django.db import models
 
 class User(AbstractUser):
     image = models.ImageField(
-        upload_to="media/images", null=True, blank=True
+        upload_to="images", null=True, blank=True
     )
 
     phone_number = models.CharField(

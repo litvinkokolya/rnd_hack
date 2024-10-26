@@ -6,6 +6,8 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.conf.urls.static import static
+from rnd_hack import settings
 
 api_urlpatterns_v1 = [
     path("", include("apps.users.urls")),
@@ -28,3 +30,5 @@ urlpatterns = [
     path("api/v1/", include(api_urlpatterns_v1)),
 ]
 urlpatterns += swagger_urlpatterns
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
