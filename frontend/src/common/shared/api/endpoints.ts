@@ -26,6 +26,6 @@ export const ENDPOINTS = {
   },
   ASSESSMENTS: {
     ATTRIBUTE: `${BASE_API_URL}/api/v1/nominationAttribute/`,
-    RESULTS: `${BASE_API_URL}/api/v1/result/`,
+    RESULTS: `${BASE_API_URL}/api/v1/results/`,
   },
 };

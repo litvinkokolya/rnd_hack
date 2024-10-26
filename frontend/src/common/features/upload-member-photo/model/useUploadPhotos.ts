@@ -13,7 +13,6 @@ interface IUseUploadPhotos {
 export const useUploadPhotos = ({ selectedFiles }: IUseUploadPhotos) => {
   const router = useRouter();
   const user = useAtomValue(userAtom);
-  console.log(user);
 
   const uploadPhotos = async () => {
     try {

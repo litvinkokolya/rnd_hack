@@ -13,16 +13,16 @@ import { Loader } from "common/shared/ui/loader";
 import { getUserIsStaff } from "common/shared/constants";
 import cn from "classnames";
 
-export const MemberCard: FC<any> = ({ member: work }) => {
+export const MemberCard: FC<MemberCardProps> = ({ member: work }) => {
   const user = useAtomValue(userAtom);
 
-  const { event, id, member, result_sum, preview } = work;
+  const { preview, id, result_sum, member, is_done } = work;
 
   // const { data: resultData, isLoading } = useQuery(
-  //   ["memberResult", id],
+  //   ['memberResult', id],
   //   () => getMemberResults(id),
   //   {
-  //     enabled: !!id,
+  //     enabled: !!id && USER_IS_STAFF,
   //   }
   // );
 
@@ -36,7 +36,7 @@ export const MemberCard: FC<any> = ({ member: work }) => {
   };
 
   const memberLink = () => {
-    if (!isMyMark()) {
+    if (preview && !isMyMark()) {
       return `/member-evaluation/${id}`;
     }
     return `/member-result/${id}`;
@@ -46,41 +46,54 @@ export const MemberCard: FC<any> = ({ member: work }) => {
     if (!isMyMark()) {
       return "оцените работу";
     }
-    if (result_sum) {
+    if (preview && result_sum) {
       return `${result_sum} ${declineNumberOfBalls(result_sum)}`;
     }
     return "оценивается";
   };
 
+  const notPhotoMembers = () => !preview;
+
   return (
     <>
       {/* {!isLoading ? ( */}
       <>
-        <li className={styles.members__item} key={member.id}>
-          <Link
-            href={memberLink()}
-            className={cn(styles.members__content, {
-              [styles.members__content_done]: member.is_done && isMyMark(),
-            })}
-          >
-            <span className={styles.members__number}>№{member.id}</span>
-            <div className={styles.members__service}>
-              <p className={styles.members__nomination}>
-                {`${member.nomination} ${member.category}`}
-              </p>
-              <span className={styles.members__points}>{memberPoints()}</span>
-            </div>
-            <div>
-              <img
-                width={55}
-                height={55}
-                className={styles.members__avatar}
-                src={preview}
-                alt={cn(member.nomination, member.category)}
-              />
-            </div>
-          </Link>
-        </li>
+        {!notPhotoMembers() && (
+          <li className={styles.members__item} key={id}>
+            <Link
+              href={memberLink()}
+              className={cn(styles.members__content, {
+                [styles.members__content_done]: is_done && isMyMark(),
+              })}
+            >
+              <span className={styles.members__number}>№{id}</span>
+              <div className={styles.members__service}>
+                <span className={styles.members__points}>{memberPoints()}</span>
+              </div>
+              <div>
+                {preview ? (
+                  <>
+                    <img
+                      width={55}
+                      height={55}
+                      className={styles.members__avatar}
+                      src={`${process.env.NEXT_PUBLIC_BASE_API_URL}${preview}`}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Image
+                      width={55}
+                      height={55}
+                      src={unknownAvatar}
+                      alt="Фото не выбрано"
+                    ></Image>
+                  </>
+                )}
+              </div>
+            </Link>
+          </li>
+        )}
       </>
       {/* ) : (
         <Loader />

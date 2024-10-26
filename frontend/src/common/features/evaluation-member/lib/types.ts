@@ -1,5 +1,5 @@
-import { IPhoto } from 'common/features/upload-member-photo/lib';
-import { ChangeEvent } from 'react';
+import { IPhoto } from "common/features/upload-member-photo/lib";
+import { ChangeEvent } from "react";
 
 export interface IMemberAssessmentsAttributes {
   name: string;
@@ -12,8 +12,7 @@ export interface IEvaluationFormProps {
 }
 
 export interface IMemberPhotoList {
-  photos: IPhoto[];
-  beforeAfter: string;
+  photos: any[];
 }
 
 export interface IEvaluationCriteriaFormProps {
