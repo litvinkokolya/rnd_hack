@@ -226,6 +226,12 @@ class Work(models.Model):
                 self.is_done = False
         super().save(*args, **kwargs)
 
+    @property
+    def result_sum(self):
+        unique_results = self.result.order_by("reviewer").distinct("reviewer")
+
+        return sum(result.score for result in unique_results)
+
     class Meta:
         verbose_name = "Работа"
         verbose_name_plural = "Работы"
@@ -292,6 +298,7 @@ class Result(models.Model):
                              verbose_name="Подробная оценка",
                              help_text="Не трогать. Считается автоматически!"
                              )
+    balls = models.IntegerField(default=0, null=True, blank=True)
 
     class Meta:
         verbose_name = "Результат"

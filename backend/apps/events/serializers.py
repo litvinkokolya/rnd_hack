@@ -44,10 +44,19 @@ class MemberSerializer(serializers.ModelSerializer):
 class WorkSerializer(serializers.ModelSerializer):
     event = EventSerializer()
     member = MemberSerializer()
+    preview = serializers.SerializerMethodField()
+    result_sum = serializers.IntegerField(source="result_all", read_only=True)
 
     class Meta:
         model = Work
         fields = '__all__'
+
+    def get_preview(self, obj) -> str:
+        preview = obj.images_work.first()
+        if preview and preview.image:
+            return preview.image.url
+        else:
+            return None
 
 
 class WorkCreateSerializer(serializers.ModelSerializer):
