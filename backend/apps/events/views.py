@@ -4,7 +4,7 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 
 from .models import Achievement, Event, Member, Work, ImagesWork, Result
 from .serializers import AchievementSerializer, EventSerializer, MemberSerializer, WorkSerializer, ImagesWorkSerializer, \
-    ResultSerializer, EventCreateSerializer, WorkCreateSerializer, ImagesWorkCreateSerializer
+    ResultSerializer, EventCreateSerializer, WorkCreateSerializer, ImagesWorkCreateSerializer, ResultCreateSerializer
 
 
 class AchievementViewSet(viewsets.ModelViewSet):
@@ -57,5 +57,10 @@ class ImagesWorkViewSet(viewsets.ModelViewSet):
 
 class ResultViewSet(viewsets.ModelViewSet):
     queryset = Result.objects.all()
-    serializer_class = ResultSerializer
+    filterset_fields = ["work"]
     filter_backends = (OrderingFilter, DjangoFilterBackend, SearchFilter)
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return ResultCreateSerializer
+        return ResultSerializer

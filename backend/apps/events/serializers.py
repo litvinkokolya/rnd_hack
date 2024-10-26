@@ -87,7 +87,16 @@ class ImagesWorkCreateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ResultCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Result
+        fields = '__all__'
+
+
 class ResultSerializer(serializers.ModelSerializer):
+    work = WorkSerializer()
+    reviewer = MemberSerializer()
 
     class Meta:
         model = Result
