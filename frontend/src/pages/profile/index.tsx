@@ -11,12 +11,31 @@ import { useEffect, useState } from "react";
 import { MembersList } from "common/widgets/members-list/";
 import { Button } from "common/shared/ui/button";
 import { useRouter } from "next/router";
+import { useQuery } from "react-query";
+import { IMember } from "common/entities/member";
+import { getWorks } from "common/shared/api/works";
 
 function ProfilePage() {
   const champ = useAtomValue(champAtom);
   const user = useAtomValue(userAtom);
+  console.log(champ);
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
+  const [works, setWorks] = useState<any[]>();
+
+  const { isLoading: isMembersLoading } = useQuery(
+    "worksList",
+    async () => {
+      const { data } = await getWorks(champ?.id!);
+      setWorks(data);
+      return data;
+    },
+    {
+      enabled: !!champ?.id,
+      refetchOnWindowFocus: true,
+      refetchInterval: 50 * 60 * 100,
+    }
+  );
 
   useEffect(() => {
     setIsClient(true);
@@ -32,14 +51,17 @@ function ProfilePage() {
           <UserName />
           <UserRole />
           <UserAction role={champ?.role!} />
-          <Button
-            onClick={() => {
-              router.push("/upload-photo");
-            }}
-          >
-            Выложить свой результат
-          </Button>
-          <MembersList />
+          {works?.some((work) => work.is_mine) ? null : (
+            <Button
+              onClick={() => {
+                router.push("/upload-photo");
+              }}
+            >
+              Выложить свой результат
+            </Button>
+          )}
+
+          <MembersList works={works} isLoading={isMembersLoading} />
         </>
       ) : (
         <Loader fullPage />

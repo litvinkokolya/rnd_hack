@@ -3,38 +3,32 @@ import {
   MemberCard,
   MemberCardSkeleton,
 } from "common/entities/member";
-import { getMembers } from "common/shared/api/members";
 import { useAtomValue } from "jotai";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
-import { champAtom, userAtom } from "store";
+import { champAtom } from "store";
 import styles from "./MembersList.module.scss";
 import { EvaluationModal } from "common/features/evaluation-member/ui";
-import { getUserIsOrganizer, getUserIsStaff } from "common/shared/constants";
 import { motion } from "framer-motion";
-import { Loader } from "common/shared/ui/loader";
 import { getWorks } from "common/shared/api/works";
 
-export const MembersList = () => {
-  const [works, setWorks] = useState<IMember[]>();
+export const MembersList = ({ isMembersLoading, works }: any) => {
+  // const [works, setWorks] = useState<IMember[]>();
   const champ = useAtomValue(champAtom);
-  const USER_IS_STAFF = getUserIsStaff();
-  const USER_IS_ORGANIZER = getUserIsOrganizer();
-  const user = useAtomValue(userAtom);
 
-  const { isLoading: isMembersLoading } = useQuery(
-    "worksList",
-    async () => {
-      const { data } = await getWorks(champ?.id!);
-      setWorks(data);
-      return data;
-    },
-    {
-      enabled: !!champ?.id,
-      refetchOnWindowFocus: true,
-      refetchInterval: 50 * 60 * 100,
-    }
-  );
+  // const { isLoading: isMembersLoading } = useQuery(
+  //   "worksList",
+  //   async () => {
+  //     const { data } = await getWorks(champ?.id!);
+  //     setWorks(data);
+  //     return data;
+  //   },
+  //   {
+  //     enabled: !!champ?.id,
+  //     refetchOnWindowFocus: true,
+  //     refetchInterval: 50 * 60 * 100,
+  //   }
+  // );
 
   if (isMembersLoading) {
     return (
@@ -47,14 +41,7 @@ export const MembersList = () => {
   }
 
   const renderMemberCards = (members: IMember[]) => (
-    <ul
-      className={styles.members__list}
-      // style={{
-      //   minHeight: `${
-      //     members === currentMasterMembers && members.length * 75
-      //   }px`,
-      // }}
-    >
+    <ul className={styles.members__list}>
       {members?.map((member, index) => (
         <motion.li
           key={member.id}
