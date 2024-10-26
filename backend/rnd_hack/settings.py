@@ -78,6 +78,10 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=5),
 }
 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BEAT_SCHEDULE = 'rnd_hack.celery_beat_schedule.CELERY_BEAT_SCHEDULE'
+
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 

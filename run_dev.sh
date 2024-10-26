@@ -17,6 +17,11 @@ function start_back(){
     tmux send-keys -t $1 "cd backend && source venv/bin/activate && python manage.py runserver" C-m
 }
 
+#function start_celery() {
+#    tmux split-window -h
+#    tmux send-keys -t $1 "celery -A rnd_hack worker --loglevel=info && celery -A rnd_hack beat --loglevel=info"
+#}
+
 function ensure_session() {
     tmux has-session -t ${projectName} 2>/dev/null
 

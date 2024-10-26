@@ -9,7 +9,27 @@ class AchievementSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class EventCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = '__all__'
+
+
 class EventSerializer(serializers.ModelSerializer):
+    achievement_winner = AchievementSerializer()
+    achievement_member = AchievementSerializer()
+    is_participation = serializers.SerializerMethodField()
+
+    def get_is_participation(self, obj) -> bool:
+        user = self.context.get("request").user
+        event = obj
+        if Member.objects.filter(
+            event__pk=event.pk, user=user
+        ).exists():
+            return True
+        else:
+            return False
+
     class Meta:
         model = Event
         fields = '__all__'

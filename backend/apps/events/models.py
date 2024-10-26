@@ -1,4 +1,5 @@
 from django.contrib.postgres.fields import ArrayField
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -19,7 +20,7 @@ class Event(models.Model):
     image = models.ImageField(upload_to="event_images", null=True, blank=True)
     description = models.CharField(max_length=500, null=True, blank=True)
     tags = ArrayField(models.CharField(max_length=50), blank=True)
-    max_members = models.PositiveIntegerField(null=True, blank=True) #TODO: проверять чтобы нельзя было больше этого количества
+    max_members = models.PositiveIntegerField(null=True, blank=True)
     for_whom = models.IntegerField(choices=FOR_WHOM_CHOICES, null=True, blank=True)
     count_photo = models.IntegerField(null=True, blank=True)
     prize = models.CharField(max_length=100, null=True, blank=True)
@@ -51,6 +52,11 @@ class Member(models.Model):
     event = models.ForeignKey('Event', on_delete=models.PROTECT, null=True, blank=True, related_name='member')
     winner = models.BooleanField(default=False)
     joined_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if self.event.max_members >= self.event.member.count():
+            raise ValidationError(f"Уже достаточное количество участников")
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.user} - {self.joined_at}'

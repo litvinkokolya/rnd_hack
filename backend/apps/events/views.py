@@ -3,7 +3,8 @@ from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 from .models import Achievement, Event, Member, Work, ImagesWork, Result
-from .serializers import AchievementSerializer, EventSerializer, MemberSerializer, WorkSerializer, ImagesWorkSerializer, ResultSerializer
+from .serializers import AchievementSerializer, EventSerializer, MemberSerializer, WorkSerializer, ImagesWorkSerializer, \
+    ResultSerializer, EventCreateSerializer
 
 
 class AchievementViewSet(viewsets.ModelViewSet):
@@ -14,8 +15,12 @@ class AchievementViewSet(viewsets.ModelViewSet):
 
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
-    serializer_class = EventSerializer
     filter_backends = (OrderingFilter, DjangoFilterBackend, SearchFilter)
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return EventCreateSerializer
+        return EventSerializer
 
 #   @action(methods=['get'], detail=True, url_path='print', url_name='print')
 #       def print_form(self, request, *args, **kwargs):
