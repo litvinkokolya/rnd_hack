@@ -1,5 +1,5 @@
-import styles from './Loader.module.scss';
-import cn from 'classnames';
+import styles from "./Loader.module.scss";
+import cn from "classnames";
 
 export const Loader = ({ fullPage = false }: { fullPage?: boolean }) => {
   return (

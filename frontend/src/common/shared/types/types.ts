@@ -3,8 +3,8 @@ export interface IUser {
   first_name: string;
   last_name: string;
   image: null | File | string;
-  optimized_image?: string | null;
   phone_number: string;
+  about_me: string;
 }
 
 export interface ILoginRequest {

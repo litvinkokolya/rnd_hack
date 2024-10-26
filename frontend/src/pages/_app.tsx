@@ -14,16 +14,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
   });
 
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     const router = require('next/router').default;
-  //     if (!user) {
-  //       router.replace('/');
-  //     } else if (user.image === null) {
-  //       router.replace('/avatar');
-  //     }
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const router = require("next/router").default;
+      if (!user) {
+        router.replace("/");
+      } else if (user.image === null) {
+        router.replace("/avatar");
+      }
+    }
+  }, [user]);
 
   return (
     <QueryClientProvider client={queryClient}>
