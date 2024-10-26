@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 from .models import Achievement, Event, Member, Work, ImagesWork, Result
+from .permissions import TelegramBotUpdate
 from .serializers import AchievementSerializer, EventSerializer, MemberSerializer, WorkSerializer, ImagesWorkSerializer, \
     ResultSerializer, EventCreateSerializer, WorkCreateSerializer, ImagesWorkCreateSerializer, ResultCreateSerializer
 
@@ -37,6 +38,7 @@ class WorkViewSet(viewsets.ModelViewSet):
     queryset = Work.objects.all()
     filterset_fields = ["event"]
     filter_backends = (OrderingFilter, DjangoFilterBackend, SearchFilter)
+    permission_classes = [TelegramBotUpdate]
 
     def get_serializer_class(self):
         if self.request.method == 'POST':

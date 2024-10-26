@@ -4,6 +4,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from integrations.telegram import TelegramIntegration
+
 
 class Achievement(models.Model):
     image = models.ImageField(
@@ -318,8 +320,9 @@ def save_works(sender, instance, created, **kwargs):
     if w:
         w.save()
 
-# @receiver(post_save, sender=Work)
-# def save_url(sender, instance, **kwargs):
-#     if instance.url_video and not instance.url_message_video:
-#         integration = TelegramIntegration()
-#         integration.send_video_to_telegram_channel(instance)
+
+@receiver(post_save, sender=Work)
+def save_url(sender, instance, **kwargs):
+    if instance.url_video and not instance.url_message_video:
+        integration = TelegramIntegration()
+        integration.send_video_to_telegram_channel(instance)

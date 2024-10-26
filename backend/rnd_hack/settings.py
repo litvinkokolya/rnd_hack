@@ -145,7 +145,7 @@ DEFAULT_SENDER = "74956665610"
 
 # Telegram settings
 TELEGRAM_SECRET_KEY = env("SECRET_KEY_TELEGRAM")
-TELEGRAM_CHAT_ID = env("TELEGRAM_CHAT_ID") #TODO: поправить
+TELEGRAM_CHAT_ID = env("TELEGRAM_CHAT_ID")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

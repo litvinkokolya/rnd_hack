@@ -19,7 +19,7 @@ function start_back(){
 
 function start_bot(){
     tmux split-window -h
-    tmux send-keys -t $1 "cd telegrambot && source venv/bin/activate && python manage.py runserver" C-m
+    tmux send-keys -t $1 "cd telegrambot && source venv/bin/activate && python main.py" C-m
 }
 
 #function start_celery() {
@@ -48,6 +48,7 @@ select command in "${command1}" "${command2}" "${command3}" "${command4}"; do
            tmux kill-pane -a
            start_front 0 &
            start_back 1 &
+           start_bot 2 &
            echo -e "\e[1;33mProject ${projectName} was started....\e[0m"
    fi
 

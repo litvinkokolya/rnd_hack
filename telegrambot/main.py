@@ -35,14 +35,14 @@ async def send_work(message: types.Message):
         await message.answer("Вы уже прикрепили видео. Отправка дополнительных видео запрещена.")
         return
 
-    member_nomination_id = work_id_storage
+    work_id = work_id_storage
     try:
         if message.content_type != 'video' or message.media_group_id is not None:
             await message.answer("Пожалуйста, отправьте только одно видео в сообщении.")
             return
 
         async with ClientSession() as session:
-            async with session.patch(f"{BACKEND_URL}/api/v1/memberNomination/{member_nomination_id}/", json=
+            async with session.patch(f"{BACKEND_URL}/api/v1/works/{work_id}/", json=
             {"url_video": message.video.file_id, "user": "telegram"},
                                      headers={"Content-Type": "application/json"}) as response:
                 if response.status == 200:
