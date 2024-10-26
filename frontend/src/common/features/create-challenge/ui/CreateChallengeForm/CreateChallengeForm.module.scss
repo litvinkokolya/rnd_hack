@@ -1,0 +1,19 @@
+.form {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  & > div {
+    width: 390px;
+  }
+}
+
+.label {
+  display: flex;
+  margin: 10px 0;
+
+  &:first-of-type {
+    margin-bottom: 10px;
+  }
+}

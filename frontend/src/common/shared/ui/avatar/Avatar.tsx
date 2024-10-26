@@ -1,6 +1,6 @@
-import styles from './Avatar.module.scss';
-import { IUser } from 'common/shared/types';
-import cn from 'classnames';
+import styles from "./Avatar.module.scss";
+import { IUser } from "common/shared/types";
+import cn from "classnames";
 
 interface IAvatarProps {
   edit?: boolean;
@@ -8,11 +8,7 @@ interface IAvatarProps {
 }
 
 const Avatar = ({ edit = false, user }: IAvatarProps) => {
-  const avatarSrc = user?.image
-    ? user.image instanceof File
-      ? URL.createObjectURL(user.image)
-      : user.optimized_image || user.image
-    : null;
+  const avatarSrc = user?.image;
 
   return (
     <>
@@ -24,7 +20,7 @@ const Avatar = ({ edit = false, user }: IAvatarProps) => {
       >
         {avatarSrc && (
           <img
-            src={avatarSrc}
+            src={`${process.env.NEXT_PUBLIC_BASE_API_URL}${avatarSrc}`}
             className={styles.user_avatar}
             alt={`${user?.first_name} ${user?.last_name}`}
             width={150}

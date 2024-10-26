@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from 'react';
-import styles from './Button.module.scss';
-import cn from 'classnames';
+import { FC, useEffect, useState } from "react";
+import styles from "./Button.module.scss";
+import cn from "classnames";
 
 interface ButtonProps {
   children: string;
@@ -8,6 +8,7 @@ interface ButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   loading?: boolean;
+  type?: "button" | "submit" | "reset" | undefined;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -15,7 +16,8 @@ export const Button: FC<ButtonProps> = ({
   disabled,
   onClick,
   loading,
-  className = '',
+  className = "",
+  type = "button",
 }) => {
   const [isClient, setIsClient] = useState(false);
 
@@ -27,6 +29,7 @@ export const Button: FC<ButtonProps> = ({
     <>
       {isClient && (
         <button
+          type={type}
           className={cn(styles.UI_button, className, {
             [styles.UI_button_disabled]: disabled,
             [styles.UI_button_loading]: loading,
@@ -34,7 +37,7 @@ export const Button: FC<ButtonProps> = ({
           disabled={disabled || loading}
           onClick={onClick}
         >
-          {loading ? 'Загрузка...' : <>{children}</>}
+          {loading ? "Загрузка..." : <>{children}</>}
         </button>
       )}
     </>

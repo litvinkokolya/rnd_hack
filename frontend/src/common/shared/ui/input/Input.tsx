@@ -1,5 +1,5 @@
-import { ChangeEvent, ForwardRefRenderFunction, Ref } from 'react';
-import styles from './Input.module.scss';
+import { ChangeEvent, ForwardRefRenderFunction, Ref } from "react";
+import styles from "./Input.module.scss";
 
 interface InputProps {
   type?: string;
@@ -26,7 +26,7 @@ function checkInputLength(event: ChangeEvent<HTMLInputElement>) {
 }
 
 export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
-  type = 'text',
+  type = "text",
   minLength,
   placeholder,
   maxLength,
@@ -35,21 +35,23 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
   onInput = checkInputLength,
   pattern,
   error,
-  icon = '',
+  icon = "",
   autofocus,
   required = false,
   ref,
-  autoComplete = 'off',
+  autoComplete = "off",
 }) => {
   return (
     <div
       className={`${styles.input_box} ${styles[icon]} ${
-        error && styles[icon + '_error']
+        error && styles[icon + "_error"]
       }`}
     >
       <input
         autoFocus={autofocus}
-        className={`${styles.UI_input} ${error ? styles.UI_input_error : ''}`}
+        className={`${styles.UI_input} ${error ? styles.UI_input_error : ""} ${
+          !icon && styles.notIcon
+        }`}
         type={type}
         placeholder={placeholder}
         value={value}

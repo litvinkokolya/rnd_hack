@@ -16,6 +16,7 @@ import { IUser } from "common/shared/types";
 import { useDebounce } from "../../model";
 import { LogoutModal } from "common/features/logout/ui";
 import { Textarea } from "common/shared/ui/textarea";
+import { CreateChallengeModal } from "common/features/create-challenge/ui/CreateChallengeModal";
 
 export const ProfileEditForm: FC = () => {
   const { control, setValue } = useForm();
@@ -23,6 +24,7 @@ export const ProfileEditForm: FC = () => {
   const [isClient, setIsClient] = useState(false);
   const setStoreUser = useSetAtom(userAtom);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   useQuery(["user"], getMe, {
     onSuccess: (response) => {
@@ -76,7 +78,11 @@ export const ProfileEditForm: FC = () => {
   const handleNameChange =
     (type: "first_name" | "last_name" | "about_me") =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(type, e.target.value.trim());
+      if (type === "about_me") {
+        setValue("about_me", e.target.value);
+      } else {
+        setValue(type, e.target.value.trim());
+      }
       debouncedOnSubmitName(type, e.target.value);
     };
 
@@ -150,12 +156,10 @@ export const ProfileEditForm: FC = () => {
               name="about_me"
               render={({ field }) => (
                 <>
-                  <label className={`${styles.profile__label}`}>
-                    Общая информация:
-                  </label>
+                  <label className={`${styles.profile__label}`}>Обо мне:</label>
                   <Textarea
-                    maxLength={255}
-                    minLength={2}
+                    maxLength={1024}
+                    minLength={3}
                     placeholder="Расскажите о себе"
                     autoComplete="about_me"
                     {...field}
@@ -165,6 +169,16 @@ export const ProfileEditForm: FC = () => {
               )}
             />
           </div>
+          <p>
+            Создать челлендж -
+            <Button className={""} onClick={() => setIsCreateModalOpen(true)}>
+              ➕
+            </Button>
+          </p>
+          <CreateChallengeModal
+            isOpen={isCreateModalOpen}
+            onClose={() => setIsCreateModalOpen(false)}
+          />
           <ChampsList
             disableChamps={
               literalValidation(name) ||
