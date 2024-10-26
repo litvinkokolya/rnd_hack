@@ -137,8 +137,8 @@ export const ShowChallenge = ({
               <Button
                 onClick={() => {
                   loginUserMutation.mutate();
-                  // setSelectedChamp(champ);
-                  // router.push("./profile");
+                  setSelectedChamp(champ);
+                  router.push("./profile");
                 }}
               >
                 Принять участие

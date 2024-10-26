@@ -13,6 +13,7 @@ import { EvaluationModal } from "common/features/evaluation-member/ui";
 import { getUserIsOrganizer, getUserIsStaff } from "common/shared/constants";
 import { motion } from "framer-motion";
 import { Loader } from "common/shared/ui/loader";
+import { getWorks } from "common/shared/api/works";
 
 export const MembersList = () => {
   const [members, setMembers] = useState<IMember[]>();
@@ -22,9 +23,9 @@ export const MembersList = () => {
   const user = useAtomValue(userAtom);
 
   const { isLoading: isMembersLoading } = useQuery(
-    "membersList",
+    "worksList",
     async () => {
-      const { data } = await getMembers(champ?.id!);
+      const { data } = await getWorks(champ?.id!);
       setMembers(data);
       return data;
     },
@@ -35,19 +36,19 @@ export const MembersList = () => {
     }
   );
 
-  const currentMasterMembers = useMemo(() => {
-    return (
-      members?.filter((member) => member.member.includes(user?.last_name!)) ||
-      []
-    );
-  }, [members, user?.last_name]);
+  // const currentMasterMembers = useMemo(() => {
+  //   return (
+  //     members?.filter((member) => member.member.includes(user?.last_name!)) ||
+  //     []
+  //   );
+  // }, [members, user?.last_name]);
 
-  const otherMasterMembers = useMemo(() => {
-    return (
-      members?.filter((member) => !member.member.includes(user?.last_name!)) ||
-      []
-    );
-  }, [members, user?.last_name]);
+  // const otherMasterMembers = useMemo(() => {
+  //   return (
+  //     members?.filter((member) => !member.member.includes(user?.last_name!)) ||
+  //     []
+  //   );
+  // }, [members, user?.last_name]);
 
   if (isMembersLoading) {
     return (
@@ -62,11 +63,11 @@ export const MembersList = () => {
   const renderMemberCards = (members: IMember[]) => (
     <ul
       className={styles.members__list}
-      style={{
-        minHeight: `${
-          members === currentMasterMembers && members.length * 75
-        }px`,
-      }}
+      // style={{
+      //   minHeight: `${
+      //     members === currentMasterMembers && members.length * 75
+      //   }px`,
+      // }}
     >
       {members?.map((member, index) => (
         <motion.li
@@ -87,20 +88,16 @@ export const MembersList = () => {
         renderMemberCards(members!)
       ) : (
         <>
-          {!USER_IS_ORGANIZER && currentMasterMembers.length !== 0 && (
+          {/* {!USER_IS_ORGANIZER && currentMasterMembers.length !== 0 && (
             <>
               <h3 className={styles.members__title}>Ваши работы:</h3>
               {renderMemberCards(currentMasterMembers)}
             </>
-          )}
+          )} */}
           {!USER_IS_ORGANIZER && (
             <h3 className={styles.members__title}>Работы других мастеров:</h3>
           )}
-          {otherMasterMembers.length !== 0 ? (
-            renderMemberCards(otherMasterMembers)
-          ) : (
-            <Loader fullPage />
-          )}
+          {[].length !== 0 ? renderMemberCards([]) : <Loader fullPage />}
         </>
       )}
       <EvaluationModal />

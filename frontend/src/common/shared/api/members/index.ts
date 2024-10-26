@@ -8,11 +8,7 @@ export const setMember = (params: any): AxiosPromise<IMember> =>
   axiosInstanse.post(ENDPOINTS.MEMBERS.MEMBERS, params);
 
 export const getMembers = (champId: number): AxiosPromise<IMember[]> =>
-  axiosInstanse.get(
-    ENDPOINTS.MEMBERS.MEMBERS +
-      "?category_nomination__event_category__event=" +
-      champId
-  );
+  axiosInstanse.get(ENDPOINTS.MEMBERS.MEMBERS + "?event=" + champId);
 
 export const getMember = (memberId: number): AxiosPromise<IMember> =>
   axiosInstanse.get(ENDPOINTS.MEMBERS.MEMBERS + memberId + "/");
