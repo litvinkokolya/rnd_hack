@@ -9,11 +9,14 @@ import Link from "next/link";
 import { Loader } from "common/shared/ui/loader";
 import { useEffect, useState } from "react";
 import { MembersList } from "common/widgets/members-list/";
+import { Button } from "common/shared/ui/button";
+import { useRouter } from "next/router";
 
 function ProfilePage() {
   const champ = useAtomValue(champAtom);
   const user = useAtomValue(userAtom);
   const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
@@ -29,6 +32,13 @@ function ProfilePage() {
           <UserName />
           <UserRole />
           <UserAction role={champ?.role!} />
+          <Button
+            onClick={() => {
+              router.push("/upload-photo");
+            }}
+          >
+            Выложить свой результат
+          </Button>
           <MembersList />
         </>
       ) : (

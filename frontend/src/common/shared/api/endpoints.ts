@@ -14,7 +14,10 @@ export const ENDPOINTS = {
   },
   MEMBERS: {
     MEMBERS: `${BASE_API_URL}/api/v1/members/`,
-    PHOTOS: `${BASE_API_URL}/api/v1/memberNominationPhoto/`,
+    PHOTOS: `${BASE_API_URL}/api/v1/image_works/`,
+  },
+  WORKS: {
+    WORKS: `${BASE_API_URL}/api/v1/works/`,
   },
   EVENTS: {
     CHAMP: `${BASE_API_URL}/api/v1/events/`,

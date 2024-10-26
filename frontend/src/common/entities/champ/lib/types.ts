@@ -20,6 +20,7 @@ export interface IChamp {
   win_nominations: ICategoryNomination[];
   role: string;
   image: string;
+  count_photo: string;
 }
 
 export interface ChampCardProps {

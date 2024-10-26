@@ -4,4 +4,7 @@ import { axiosInstanse } from "../instanse";
 import { AxiosPromise } from "axios";
 
 export const getWorks = (eventd: number): AxiosPromise<IMember[]> =>
-  axiosInstanse.get(ENDPOINTS.MEMBERS.MEMBERS + "?event=" + eventd);
+  axiosInstanse.get(ENDPOINTS.WORKS.WORKS + "?event=" + eventd);
+
+export const setWork = (params: any): AxiosPromise<IMember[]> =>
+  axiosInstanse.post(ENDPOINTS.WORKS.WORKS, params);

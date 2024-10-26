@@ -3,6 +3,8 @@ import { useMutation } from "react-query";
 import { IPhoto } from "../lib/types";
 import { setMemberPhotos } from "common/shared/api/members";
 import { toast } from "react-toast";
+import { userAtom } from "store";
+import { useAtomValue } from "jotai";
 
 interface IUseUploadPhotos {
   selectedFiles: IPhoto[];
@@ -10,15 +12,15 @@ interface IUseUploadPhotos {
 
 export const useUploadPhotos = ({ selectedFiles }: IUseUploadPhotos) => {
   const router = useRouter();
+  const user = useAtomValue(userAtom);
+  console.log(user);
 
   const uploadPhotos = async () => {
     try {
       for (const file of selectedFiles) {
         const formData = new FormData();
-        formData.append("photo", file.photo as File);
-        formData.append("member_nomination", file.member_nomination.toString());
-        formData.append("before_after", file.before_after);
-        formData.append("name", file.name!);
+        formData.append("image", file.photo as File);
+        formData.append("work", user?.workId?.toString() ?? "");
         await setMemberPhotos(formData);
       }
       router.replace("/profile");

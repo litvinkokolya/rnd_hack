@@ -16,7 +16,7 @@ import { Loader } from "common/shared/ui/loader";
 import { getWorks } from "common/shared/api/works";
 
 export const MembersList = () => {
-  const [members, setMembers] = useState<IMember[]>();
+  const [works, setWorks] = useState<IMember[]>();
   const champ = useAtomValue(champAtom);
   const USER_IS_STAFF = getUserIsStaff();
   const USER_IS_ORGANIZER = getUserIsOrganizer();
@@ -26,7 +26,7 @@ export const MembersList = () => {
     "worksList",
     async () => {
       const { data } = await getWorks(champ?.id!);
-      setMembers(data);
+      setWorks(data);
       return data;
     },
     {
@@ -35,20 +35,6 @@ export const MembersList = () => {
       refetchInterval: 50 * 60 * 100,
     }
   );
-
-  // const currentMasterMembers = useMemo(() => {
-  //   return (
-  //     members?.filter((member) => member.member.includes(user?.last_name!)) ||
-  //     []
-  //   );
-  // }, [members, user?.last_name]);
-
-  // const otherMasterMembers = useMemo(() => {
-  //   return (
-  //     members?.filter((member) => !member.member.includes(user?.last_name!)) ||
-  //     []
-  //   );
-  // }, [members, user?.last_name]);
 
   if (isMembersLoading) {
     return (
@@ -84,22 +70,7 @@ export const MembersList = () => {
 
   return (
     <>
-      {USER_IS_STAFF ? (
-        renderMemberCards(members!)
-      ) : (
-        <>
-          {/* {!USER_IS_ORGANIZER && currentMasterMembers.length !== 0 && (
-            <>
-              <h3 className={styles.members__title}>Ваши работы:</h3>
-              {renderMemberCards(currentMasterMembers)}
-            </>
-          )} */}
-          {!USER_IS_ORGANIZER && (
-            <h3 className={styles.members__title}>Работы других мастеров:</h3>
-          )}
-          {[].length !== 0 ? renderMemberCards([]) : <Loader fullPage />}
-        </>
-      )}
+      {renderMemberCards(works!)}
       <EvaluationModal />
     </>
   );

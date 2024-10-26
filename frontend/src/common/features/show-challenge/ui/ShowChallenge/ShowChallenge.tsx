@@ -7,6 +7,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { champAtom, userAtom } from "store";
 import { toast } from "react-toast";
 import { useRouter } from "next/router";
+import { setWork } from "common/shared/api/works";
 
 export const ShowChallenge = ({
   isOpen,
@@ -18,7 +19,7 @@ export const ShowChallenge = ({
   champ: any;
 }) => {
   const router = useRouter();
-  const user = useAtomValue(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const [_selectedChamp, setSelectedChamp] = useAtom(champAtom);
 
   isOpen && console.log(champ);
@@ -38,10 +39,13 @@ export const ShowChallenge = ({
   };
 
   const loginUserMutation = useMutation(["setMember"], async () => {
-    return await setMemberChallenge({
+    const data = await setMemberChallenge({
       user: user?.id,
       event: champ.id,
     });
+    const work = await setWork({ event: champ.id, member: data?.id });
+    //@ts-ignore
+    setUser({ ...user!, memberId: data.id, workId: work.data.id });
   });
 
   return (

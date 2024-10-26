@@ -5,6 +5,8 @@ export interface IUser {
   image: null | File | string;
   phone_number: string;
   about_me: string;
+  memberId?: number;
+  workId?: number;
 }
 
 export interface ILoginRequest {

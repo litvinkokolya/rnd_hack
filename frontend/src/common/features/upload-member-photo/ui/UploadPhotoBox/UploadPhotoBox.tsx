@@ -1,10 +1,10 @@
-import { ChangeEvent, FC } from 'react';
-import styles from './UploadPhotoBox.module.scss';
-import UploadPhotoList from '../UploadPhotoList/UploadPhotoList';
+import { ChangeEvent, FC } from "react";
+import styles from "./UploadPhotoBox.module.scss";
+import UploadPhotoList from "../UploadPhotoList/UploadPhotoList";
 
 interface IPhotoBoxProps {
   title: string;
-  photos: any[];
+  photos: string;
   onChange: (index: number) => (event: ChangeEvent<HTMLInputElement>) => void;
   getImageSrc: (index: number) => string;
 }
