@@ -21,7 +21,7 @@ const validationSchema = yup.object().shape({
   photoCount: yup.string().required("Количество фото обязательно"),
   video: yup.string().required("Выберите да или нет"),
   image: yup.mixed().required("Изображение челленджа обязательно"),
-  maxParticipants: yup.mixed(),
+  maxParticipants: yup.string().required("Изображение челленджа обязательно"),
   participantAchievement: yup.mixed(),
   participantPrize: yup.mixed(),
   winnerAchievement: yup.mixed(),
@@ -58,6 +58,7 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
       is_video: data.video === "dontVideo" ? false : true,
       count_photo: data.photoCount,
       for_whom: data.forWho,
+      max_members: data.maxParticipants,
     };
     const formData = new FormData();
     formData.append("image", params.image);
@@ -223,12 +224,20 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
           <Controller
             control={control}
             name="maxParticipants"
+            defaultValue={"1"}
             render={({ field }) => (
               <>
                 <label className={styles.label}>
-                  Максимальное количество участников:
+                  Максимальное количество участников:{" "}
+                  <span style={{ color: "red" }}>*</span>
                 </label>
-                <Input autofocus type="number" maxLength={2} {...field} />
+                <Input
+                  autofocus
+                  minLength={1}
+                  type="number"
+                  maxLength={2}
+                  {...field}
+                />
               </>
             )}
           />
@@ -348,6 +357,7 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
                 </label>
                 <input
                   type="file"
+                  accept="image/*,.mpo"
                   onChange={(e) => {
                     const file = e.target.files ? e.target.files[0] : null;
                     console.log(file);

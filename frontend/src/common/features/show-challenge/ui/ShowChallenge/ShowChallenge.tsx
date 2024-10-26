@@ -3,8 +3,8 @@ import styles from "./ShowChallenge.module.scss";
 import { Button } from "common/shared/ui/button";
 import { useMutation } from "react-query";
 import { setMember } from "common/shared/api/members";
-import { useAtomValue } from "jotai";
-import { userAtom } from "store";
+import { useAtom, useAtomValue } from "jotai";
+import { champAtom, userAtom } from "store";
 import { toast } from "react-toast";
 import { useRouter } from "next/router";
 
@@ -19,6 +19,7 @@ export const ShowChallenge = ({
 }) => {
   const router = useRouter();
   const user = useAtomValue(userAtom);
+  const [_selectedChamp, setSelectedChamp] = useAtom(champAtom);
 
   isOpen && console.log(champ);
 
@@ -66,8 +67,26 @@ export const ShowChallenge = ({
                 </label>
                 <label>
                   Тэги:{" "}
-                  {champ.tags.map((item: any) => {
-                    return <span>{item}</span>;
+                  {champ.tags.map((item: any, index: number) => {
+                    return (
+                      <span>
+                        {" "}
+                        {item}
+                        {index === champ.tags.length - 1 ? "." : ", "}
+                      </span>
+                    );
+                  })}
+                </label>
+                <label>
+                  Критерии:{" "}
+                  {champ.criteries.map((item: any, index: number) => {
+                    return (
+                      <span>
+                        {" "}
+                        {item}
+                        {index === champ.criteries.length - 1 ? "." : ", "}
+                      </span>
+                    );
                   })}
                 </label>
                 <label>
@@ -115,7 +134,13 @@ export const ShowChallenge = ({
                 </Button>
               </>
             ) : (
-              <Button onClick={() => loginUserMutation.mutate()}>
+              <Button
+                onClick={() => {
+                  loginUserMutation.mutate();
+                  // setSelectedChamp(champ);
+                  // router.push("./profile");
+                }}
+              >
                 Принять участие
               </Button>
             )}

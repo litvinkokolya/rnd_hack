@@ -12,7 +12,8 @@
 
 .modal_exit {
   top: 100px;
-  left: 36.5%;
+  left: 50%;
+  transform: translateX(-50%) !important;
   position: fixed;
   background-color: #ffffff;
   border: 1px solid #ffae00;
