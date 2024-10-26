@@ -1,0 +1,64 @@
+@import "../../styles/variables.scss";
+
+.UI_button {
+  padding: 12px 30px;
+  border-radius: 50px;
+  background: $darkYellow;
+  border: 0;
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.1s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all ease-in-out 0.1s;
+
+  &:not([disabled]):hover {
+    background: darken($yellow, 7%);
+    scale: 1.01;
+    box-shadow: 0px 10px 20px $yellow;
+  }
+
+  &_disabled {
+    background: $grey;
+    cursor: not-allowed;
+  }
+
+  &_loading {
+    background: darken($yellow, 10%);
+    opacity: 0.6;
+    cursor: not-allowed;
+    animation: pulse 1s ease-out infinite;
+    -webkit-animation: pulse 1s ease-out infinite;
+  }
+
+  &:not([disabled]):active {
+    background: darken($yellow, 5%);
+    scale: 0.95;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+  }
+  50% {
+    transform: scale(1.07);
+    -webkit-transform: scale(1.07);
+    -moz-transform: scale(1.07);
+    -ms-transform: scale(1.07);
+    -o-transform: scale(1.07);
+  }
+  100% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+  }
+}

@@ -1,0 +1,122 @@
+@import "../../../../shared/styles/variables.scss";
+
+.avatar_input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  display: block;
+  width: 0;
+  height: 0;
+
+  &_style {
+    position: relative;
+    color: $grey;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: transparent;
+    height: 50px;
+    width: 100%;
+    border-radius: 50px;
+    border: 1px solid #d7d70f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all ease-in-out 0.1s;
+
+    &:hover {
+      background: darken($yellow, 1%);
+      scale: 1.01;
+      box-shadow: 0px 10px 20px #f4ff76;
+      color: #fff;
+    }
+
+    &:active {
+      background: darken($yellow, 5%);
+      scale: 0.95;
+    }
+  }
+}
+
+.auth_label {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+}
+
+.modal {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 22vh;
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    background: #eeeaeb;
+    border-radius: 10px;
+    position: relative;
+    padding-bottom: 20px;
+    z-index: 50;
+  }
+}
+
+.input_range {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 90%;
+  height: 15px;
+  border-radius: 15px;
+  outline: none;
+  background: #d0d0d0;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 30px;
+    height: 15px;
+    cursor: pointer;
+    opacity: 0.64;
+    background: #ffc400;
+    box-shadow: 2px 2px 5px rgba(255, 221, 0, 0.5);
+    border-radius: 3px;
+  }
+
+  &::-moz-range-thumb {
+    width: 30px;
+    height: 15px;
+    cursor: pointer;
+    opacity: 0.64;
+    background: #c6dc02;
+    box-shadow: 2px 2px 5px rgba(221, 166, 0, 0.5);
+    border-radius: 3px;
+  }
+}
+
+.close_modal {
+  position: absolute;
+  right: 0;
+  top: -30px;
+  background-color: transparent;
+  border: 0;
+  transform: scale(1.5);
+}
+
+.blur {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}

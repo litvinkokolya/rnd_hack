@@ -1,0 +1,142 @@
+@import "../styles/variables.scss";
+@import url("~react-loading-skeleton/dist/skeleton.css");
+
+@font-face {
+  font-family: "SF Pro Display";
+  font-weight: 400;
+  src: url("../../../../public/fonts/SFProDisplay-Regular.woff2")
+      format("woff2"),
+    url("../../../../public/fonts/SFProDisplay-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  font-weight: 500;
+  src: url("../../../../public/fonts/SFProDisplay-Medium.woff2") format("woff2"),
+    url("../../../../public/fonts/SFProDisplay-Medium.woff") format("woff");
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  font-weight: 800;
+  src: url("../../../../public/fonts/SFProDisplay-Heavy.woff2") format("woff2"),
+    url("../../../../public/fonts/SFProDisplay-Heavy.woff") format("woff");
+}
+
+*,
+*:after,
+*::before {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+#__next {
+  height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul {
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.visually-hidden {
+  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  -webkit-clip-path: inset(100%);
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+button,
+input {
+  font-family: "SF Pro Display", sans-serif;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+  appearance: textfield;
+}
+
+button {
+  cursor: pointer;
+}
+
+body {
+  font-family: "SF Pro Display", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: $grey;
+  padding: 0;
+  margin: 0;
+  min-width: 350px;
+  position: relative;
+  background-image: linear-gradient(180deg, #ffffea 10%, #fedd00 117.73%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+// FANCYBOX
+.fancybox__backdrop {
+  background: rgba(243, 243, 243, 0.068) !important;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  opacity: 0.8;
+}
+.f-button {
+  svg {
+    stroke: $yellow !important;
+    width: 40px !important;
+    height: 40px !important;
+    opacity: 0.7;
+  }
+}
+
+.is-close-btn {
+  top: -38px !important;
+  svg {
+    opacity: 1 !important;
+  }
+}
+
+.is-compact .fancybox__content > .f-button.is-close-btn {
+  background-color: transparent;
+}
+
+.fancybox-image {
+  border-radius: 11px;
+}
+
+.fancybox__content {
+  border-radius: 100% !important;
+}
+
+.f-button.is-next {
+  right: -3px !important;
+}
+
+.f-button.is-prev {
+  left: -3px !important;
+}

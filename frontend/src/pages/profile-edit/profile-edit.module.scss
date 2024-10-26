@@ -1,0 +1,42 @@
+@import '../../common/shared/styles/variables.scss';
+
+.profile {
+  &__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 218px;
+  }
+
+  &__button {
+    transition: 0.3s !important;
+    &:disabled {
+      transform: scale(0.7);
+      opacity: 0;
+    }
+  }
+  &__validation {
+    text-align: center;
+    color: $error;
+    opacity: 0;
+    transition: 0.3s;
+    font-size: 17px;
+    transform: scale(0.9);
+
+    &_error {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+.avatar {
+  margin-bottom: 73px;
+}

@@ -1,0 +1,133 @@
+@import "../../styles/variables.scss";
+
+.UI_input[type="number"]::-webkit-inner-spin-button,
+.UI_input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.UI_input {
+  border-radius: 50px;
+  border: 1px solid $yellow;
+  width: 100%;
+  background-color: transparent;
+  height: 50px;
+  font-size: 16px;
+  color: $yellow;
+  padding: 0 10px 0 63px;
+
+  &::-webkit-input-placeholder {
+    color: $yellow;
+    opacity: 0.7;
+  }
+
+  &::-moz-placeholder {
+    color: $yellow;
+    opacity: 0.7;
+  }
+
+  &:-ms-input-placeholder {
+    color: $yellow;
+    opacity: 0.7;
+  }
+
+  &::-ms-input-placeholder {
+    color: $yellow;
+    opacity: 0.7;
+  }
+
+  &::placeholder {
+    color: $yellow;
+    opacity: 0.7;
+  }
+
+  &:focus {
+    outline: 1px solid $yellow;
+    box-shadow: 0px 10px 20px #ffb8da;
+  }
+
+  &_error {
+    border-color: $error;
+    color: $error;
+
+    &:focus {
+      outline: 1px solid $error;
+      box-shadow: 0px 10px 20px lighten($error, 35%);
+    }
+
+    &::-webkit-input-placeholder {
+      color: $error;
+    }
+
+    &::-moz-placeholder {
+      color: $error;
+    }
+
+    &:-ms-input-placeholder {
+      color: $error;
+    }
+
+    &::-ms-input-placeholder {
+      color: $error;
+    }
+
+    &::placeholder {
+      color: $error;
+    }
+  }
+}
+
+.convert {
+  &::before {
+    background-image: url(../../../../../public/images/convert.svg);
+  }
+
+  &_error::before {
+    background-image: url(../../../../../public/images/convertError.svg);
+  }
+}
+
+.lock {
+  &::before {
+    background-image: url(../../../../../public/images/lock.svg);
+  }
+
+  &_error::before {
+    background-image: url(../../../../../public/images/lockError.svg);
+  }
+}
+
+.profile {
+  &::before {
+    background-image: url(../../../../../public/images/profile.svg);
+  }
+
+  &_error::before {
+    background-image: url(../../../../../public/images/lockError.svg);
+  }
+}
+
+.input_box {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 6%;
+  }
+}
+
+.input__error {
+  position: absolute;
+  width: 100%;
+  bottom: -20px;
+  font-size: 16px;
+  color: $error;
+}

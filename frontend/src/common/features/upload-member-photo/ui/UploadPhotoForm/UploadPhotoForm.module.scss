@@ -1,0 +1,66 @@
+@import '../../../../shared/styles/variables.scss';
+
+.upload_photo {
+  &__form {
+    display: flex;
+    gap: 18px;
+  }
+
+  &__btn {
+    border-radius: 5px !important;
+    width: 140px !important;
+    height: 35px !important;
+    margin-top: 40px;
+  }
+
+  &__video_link {
+    border: 1px solid rgba(79, 79, 79, 0.25);
+    border-radius: 10px;
+    background: rgba(243, 243, 243, 0.49);
+    font-weight: 700;
+    font-size: 14px;
+    color: #fd77b4;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 30px;
+    margin-top: 30px;
+    transition: all 0.2s;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 10px 20px #ffb8da;
+      color: #ff4a9b;
+    }
+  }
+
+  &__title {
+    margin: 30px;
+    color: $black;
+    font-size: 24px;
+    font-weight: 800;
+    text-align: center;
+    margin-top: 200px;
+  }
+
+  &__nomination {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  &__decor {
+    position: absolute;
+    top: 60px;
+    height: 300px;
+    width: 92%;
+    max-width: 430px;
+    background: url(/images/decor-vectors.svg) no-repeat;
+    transform: scale(1.07);
+    -webkit-transform: scale(1.07);
+    -moz-transform: scale(1.07);
+    -ms-transform: scale(1.07);
+    -o-transform: scale(1.07);
+  }
+}

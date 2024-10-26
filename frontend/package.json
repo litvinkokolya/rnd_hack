@@ -1,44 +1,62 @@
 {
-  "name": "frontend",
+  "name": "beautyrank",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@hookform/resolvers": "^3.9.0",
-    "@mui/material": "^6.1.5",
-    "@tanstack/react-query": "^5.59.16",
-    "axios": "^1.7.7",
-    "axios-retry": "^4.5.0",
-    "clsx": "^2.1.1",
-    "jotai": "^2.10.1",
-    "mui-tel-input": "^6.0.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-hook-form": "^7.53.1",
-    "react-router-dom": "^6.27.0",
-    "yup": "^1.4.0"
+    "@fancyapps/fancybox": "^3.5.7",
+    "@fancyapps/ui": "^5.0.35",
+    "@types/jest": "^29.5.12",
+    "axios": "^1.6.5",
+    "axios-retry": "^4.3.0",
+    "classnames": "^2.5.1",
+    "dotenv": "^16.4.5",
+    "framer-motion": "^11.0.24",
+    "jest": "^29.7.0",
+    "jotai": "^2.6.2",
+    "next": "14.0.4",
+    "path": "^0.12.7",
+    "react": "18.2.0",
+    "react-avatar-editor": "^13.0.2",
+    "react-confetti": "^6.1.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.49.3",
+    "react-loading-skeleton": "^3.4.0",
+    "react-phone-input-2": "^2.15.1",
+    "react-query": "^3.39.3",
+    "remove": "^0.1.5",
+    "sass": "^1.69.7"
   },
   "devDependencies": {
-    "@eslint/js": "^9.13.0",
-    "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.3",
-    "eslint": "^9.13.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.13",
-    "globals": "^15.11.0",
-    "sass-embedded": "^1.80.4",
-    "typescript": "~5.6.2",
-    "typescript-eslint": "^8.10.0",
-    "vite": "^5.4.9",
-    "vite-tsconfig-paths": "^5.0.1"
+    "@testing-library/react": "^15.0.5",
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "20.11.5",
+    "@types/react": "18.2.48",
+    "@types/react-avatar-editor": "^13.0.2",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-input-mask": "^3.0.5",
+    "eslint": "8.56.0",
+    "eslint-config-next": "14.0.4",
+    "ts-jest": "^29.1.2",
+    "typescript": "5.3.3"
   }
 }
