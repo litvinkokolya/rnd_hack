@@ -7,14 +7,18 @@
 }
 
 .UI_input {
-  border-radius: 50px;
+  border-radius: 20px;
   border: 1px solid $yellow;
   width: 100%;
   background-color: transparent;
   height: 50px;
   font-size: 16px;
   color: $grey;
-  padding: 0 10px 0 63px;
+  padding: 10px;
+  max-width: 420px;
+  max-height: 400px;
+  min-height: 100px;
+  resize: vertical;
 
   &::-webkit-input-placeholder {
     color: $grey;

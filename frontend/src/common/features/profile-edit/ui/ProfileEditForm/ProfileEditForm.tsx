@@ -1,20 +1,21 @@
-import AvatarCropper from 'common/features/avatar-cropper/ui/AvatarCropper/AvatarCropper';
-import { Button } from 'common/shared/ui/button';
-import { Input } from 'common/shared/ui/input';
-import { Controller, useForm, useWatch } from 'react-hook-form';
-import styles from './ProfileEditForm.module.scss';
-import Avatar from 'common/shared/ui/avatar/Avatar';
-import { literalValidation } from 'common/shared/helpers';
-import { getMe, setUser } from 'common/shared/api/users';
-import { userAtom } from 'store';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { useQuery } from 'react-query';
-import { ChampsList } from 'common/widgets/champs-list';
-import { Loader } from 'common/shared/ui/loader';
-import { FC, useEffect, useState } from 'react';
-import { IUser } from 'common/shared/types';
-import { useDebounce } from '../../model';
-import { LogoutModal } from 'common/features/logout/ui';
+import AvatarCropper from "common/features/avatar-cropper/ui/AvatarCropper/AvatarCropper";
+import { Button } from "common/shared/ui/button";
+import { Input } from "common/shared/ui/input";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import styles from "./ProfileEditForm.module.scss";
+import Avatar from "common/shared/ui/avatar/Avatar";
+import { literalValidation } from "common/shared/helpers";
+import { getMe, setUser } from "common/shared/api/users";
+import { userAtom } from "store";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useQuery } from "react-query";
+import { ChampsList } from "common/widgets/champs-list";
+import { Loader } from "common/shared/ui/loader";
+import { FC, useEffect, useState } from "react";
+import { IUser } from "common/shared/types";
+import { useDebounce } from "../../model";
+import { LogoutModal } from "common/features/logout/ui";
+import { Textarea } from "common/shared/ui/textarea";
 
 export const ProfileEditForm: FC = () => {
   const { control, setValue } = useForm();
@@ -23,7 +24,7 @@ export const ProfileEditForm: FC = () => {
   const setStoreUser = useSetAtom(userAtom);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useQuery(['user'], getMe, {
+  useQuery(["user"], getMe, {
     onSuccess: (response) => {
       if (response?.data) {
         setStoreUser(response.data);
@@ -40,13 +41,13 @@ export const ProfileEditForm: FC = () => {
   const name = useWatch({
     control,
     defaultValue: user?.first_name,
-    name: 'first_name',
+    name: "first_name",
   });
 
   const lastname = useWatch({
     control,
     defaultValue: user?.last_name,
-    name: 'last_name',
+    name: "last_name",
   });
 
   const uploadUser = async (userData: Partial<IUser>) => {
@@ -64,7 +65,8 @@ export const ProfileEditForm: FC = () => {
   };
 
   const debouncedOnSubmitName = useDebounce(
-    (type: 'first_name' | 'last_name', value: string) => {
+    (type: "first_name" | "last_name" | "about_me", value: string) => {
+      if (type === "about_me" && !!value) uploadUser({ [type]: value });
       if (!literalValidation(value) && !!value) {
         uploadUser({ [type]: value });
       }
@@ -72,7 +74,7 @@ export const ProfileEditForm: FC = () => {
   );
 
   const handleNameChange =
-    (type: 'first_name' | 'last_name') =>
+    (type: "first_name" | "last_name" | "about_me") =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setValue(type, e.target.value.trim());
       debouncedOnSubmitName(type, e.target.value);
@@ -110,7 +112,7 @@ export const ProfileEditForm: FC = () => {
                     error={literalValidation(name)}
                     autoComplete="given-name"
                     {...field}
-                    onChange={handleNameChange('first_name')}
+                    onChange={handleNameChange("first_name")}
                   />
                 </>
               )}
@@ -129,7 +131,7 @@ export const ProfileEditForm: FC = () => {
                     error={literalValidation(lastname)}
                     autoComplete="family-name"
                     {...field}
-                    onChange={handleNameChange('last_name')}
+                    onChange={handleNameChange("last_name")}
                   />
                   <label
                     className={`${styles.profile__validation} ${
@@ -139,6 +141,26 @@ export const ProfileEditForm: FC = () => {
                   >
                     Недопустимые символы
                   </label>
+                </>
+              )}
+            />
+            <Controller
+              control={control}
+              defaultValue={user?.about_me}
+              name="about_me"
+              render={({ field }) => (
+                <>
+                  <label className={`${styles.profile__label}`}>
+                    Общая информация:
+                  </label>
+                  <Textarea
+                    maxLength={255}
+                    minLength={2}
+                    placeholder="Расскажите о себе"
+                    autoComplete="about_me"
+                    {...field}
+                    onChange={handleNameChange("about_me")}
+                  />
                 </>
               )}
             />
