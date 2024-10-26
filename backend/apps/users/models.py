@@ -13,12 +13,14 @@ class User(AbstractUser):
         verbose_name="Номер телефона",
     )
 
+    achievements = models.ManyToManyField('events.Achievement', blank=True, related_name='users')
+
     about_me = models.CharField(max_length=500, verbose_name="Обо мне")
 
     REQUIRED_FIELDS = ["phone_number"]
 
     class Meta(AbstractUser.Meta):
-        pass
+        verbose_name = 'Пользователи'
 
     def save(self, *args, **kwargs):
         self.username = self.phone_number

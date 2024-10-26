@@ -8,6 +8,7 @@ import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -37,7 +38,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_spectacular',
 
-    'apps.users'
+    'apps.users',
+    'apps.events'
 ]
 
 MIDDLEWARE = [
@@ -146,7 +148,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 TEMPLATES_ROOT = os.path.join(BASE_DIR, 'templates')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'static', 'assets'),

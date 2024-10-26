@@ -11,6 +11,7 @@ from rnd_hack import settings
 
 api_urlpatterns_v1 = [
     path("", include("apps.users.urls")),
+    path("", include("apps.events.urls")),
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
