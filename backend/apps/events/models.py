@@ -6,8 +6,20 @@ from django.dispatch import receiver
 
 
 class Achievement(models.Model):
-    image = models.ImageField(upload_to="achievement_images", null=True, blank=True)
-    name = models.CharField(max_length=50, null=True, blank=True)
+    image = models.ImageField(
+        upload_to="achievement_images",
+        null=True,
+        blank=True,
+        verbose_name="Изображение",
+        help_text="Загрузите изображение достижения"
+    )
+    name = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+        verbose_name="Название достижения",
+        help_text="Введите название достижения"
+    )
 
     class Meta:
         verbose_name = "Достижение"
@@ -20,23 +32,105 @@ class Event(models.Model):
         (2, 'Для всех')
     ]
 
-    name = models.CharField(max_length=100, null=True, blank=True)
-    image = models.ImageField(upload_to="event_images", null=True, blank=True)
-    description = models.CharField(max_length=500, null=True, blank=True)
-    tags = ArrayField(models.CharField(max_length=50), blank=True)
-    max_members = models.PositiveIntegerField(null=True, blank=True)
-    for_whom = models.IntegerField(choices=FOR_WHOM_CHOICES, null=True, blank=True)
-    count_photo = models.IntegerField(null=True, blank=True)
-    prize = models.CharField(max_length=100, null=True, blank=True)
-    is_video = models.BooleanField(null=True, blank=True)
-    criteries = ArrayField(models.CharField(max_length=50), blank=True)
-    created_date = models.DateField(auto_now_add=True)
-    end_date = models.DateField(null=True, blank=True)
-    achievement_winner = models.ForeignKey('Achievement', on_delete=models.SET_NULL, blank=True, null=True,
-                                           related_name='event_achiev_winner')
-    achievement_member = models.ForeignKey('Achievement', on_delete=models.SET_NULL, blank=True, null=True,
-                                           related_name='event_achiev_member')
-    is_finished = models.BooleanField(default=False)
+    name = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name="Название",
+        help_text="Введите название события"
+    )
+    image = models.ImageField(
+        upload_to="event_images",
+        null=True,
+        blank=True,
+        verbose_name="Изображение",
+        help_text="Загрузите изображение события"
+    )
+    description = models.CharField(
+        max_length=500,
+        null=True,
+        blank=True,
+        verbose_name="Описание",
+        help_text="Введите описание события"
+    )
+    tags = ArrayField(
+        models.CharField(max_length=50),
+        blank=True,
+        verbose_name="Теги",
+        help_text="Введите теги события"
+    )
+    max_members = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name="Максимальное количество участников",
+        help_text="Введите максимальное количество участников"
+    )
+    for_whom = models.IntegerField(
+        choices=FOR_WHOM_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name="Для кого",
+        help_text="Выберите, для кого это событие"
+    )
+    count_photo = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name="Количество фотографий",
+        help_text="Введите количество фотографий"
+    )
+    prize = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name="Приз",
+        help_text="Введите приз"
+    )
+    is_video = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name="Видео",
+        help_text="Укажите, можно ли видео"
+    )
+    criteries = ArrayField(
+        models.CharField(max_length=50),
+        blank=True,
+        verbose_name="Критерии",
+        help_text="Введите критерии"
+    )
+    created_date = models.DateField(
+        auto_now_add=True,
+        verbose_name="Дата создания",
+        help_text="Дата создания события"
+    )
+    end_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name="Дата окончания",
+        help_text="Дата окончания события"
+    )
+    achievement_winner = models.ForeignKey(
+        'Achievement',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='event_achiev_winner',
+        verbose_name="Достижение победителя",
+        help_text="Выберите достижение для победителя"
+    )
+    achievement_member = models.ForeignKey(
+        'Achievement',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='event_achiev_member',
+        verbose_name="Достижение участника",
+        help_text="Выберите достижение для участника"
+    )
+    is_finished = models.BooleanField(
+        default=False,
+        verbose_name="Завершено",
+        help_text="Укажите, завершено ли событие"
+    )
 
     class Meta:
         verbose_name = "Челлендж"
@@ -57,12 +151,35 @@ class Event(models.Model):
     def __str__(self) -> str:
         return self.name if self.name else 'Укажи name!!!'
 
-
 class Member(models.Model):
-    user = models.ForeignKey('users.User', on_delete=models.PROTECT, null=True, blank=True, related_name='member')
-    event = models.ForeignKey('Event', on_delete=models.PROTECT, null=True, blank=True, related_name='member')
-    winner = models.BooleanField(default=False)
-    joined_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        'users.User',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name='member',
+        verbose_name="Пользователь",
+        help_text="Выберите пользователя"
+    )
+    event = models.ForeignKey(
+        'Event',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name='member',
+        verbose_name="Событие",
+        help_text="Выберите событие"
+    )
+    winner = models.BooleanField(
+        default=False,
+        verbose_name="Победитель",
+        help_text="Укажите, является ли участник победителем"
+    )
+    joined_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата присоединения",
+        help_text="Дата присоединения участника"
+    )
 
     class Meta:
         verbose_name = "Участник"
@@ -76,19 +193,47 @@ class Member(models.Model):
     def __str__(self):
         return f'{self.user} - {self.joined_at}'
 
-
 class Work(models.Model):
-    event = models.ForeignKey("Event", on_delete=models.SET_NULL, null=True, blank=True, related_name='work')
-    member = models.ForeignKey("Member", on_delete=models.SET_NULL, null=True, blank=True, related_name='work')
+    event = models.ForeignKey(
+        "Event",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='work',
+        verbose_name="Событие",
+        help_text="Выберите событие"
+    )
+    member = models.ForeignKey(
+        "Member",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='work',
+        verbose_name="Участник",
+        help_text="Выберите участника"
+    )
 
     class Meta:
         verbose_name = "Работа"
         verbose_name_plural = "Работы"
 
-
 class ImagesWork(models.Model):
-    image = models.ImageField(upload_to="work_images", null=True, blank=True)
-    work = models.ForeignKey("Work", on_delete=models.PROTECT, null=True, blank=True, related_name='images_work')
+    image = models.ImageField(
+        upload_to="work_images",
+        null=True,
+        blank=True,
+        verbose_name="Изображение",
+        help_text="Загрузите изображение работы"
+    )
+    work = models.ForeignKey(
+        "Work",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name='images_work',
+        verbose_name="Работа",
+        help_text="Выберите работу"
+    )
 
     class Meta:
         verbose_name = "Картинка работы"
@@ -109,16 +254,36 @@ class ImagesWork(models.Model):
 
         super().save(*args, **kwargs)
 
-
 class Result(models.Model):
-    work = models.ForeignKey('Work', on_delete=models.PROTECT, blank=True, null=True, related_name='result')
-    reviewer = models.ForeignKey('Member', on_delete=models.PROTECT, blank=True, null=True, related_name='result')
-    score = ArrayField(models.CharField(max_length=5000), blank=True, null=True)
+    work = models.ForeignKey(
+        'Work',
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        related_name='result',
+        verbose_name="Работа",
+        help_text="Выберите работу"
+    )
+    reviewer = models.ForeignKey(
+        'Member',
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        related_name='result',
+        verbose_name="Оценивающий",
+        help_text="Выберите оценивающего"
+    )
+    score = ArrayField(
+        models.CharField(max_length=5000),
+        blank=True,
+        null=True,
+        verbose_name="Оценка",
+        help_text="Введите оценку"
+    )
 
     class Meta:
         verbose_name = "Результат"
         verbose_name_plural = "Результаты"
-
 
 @receiver(post_save, sender=Event)
 def determine_achievements(sender, instance, created, **kwargs):
