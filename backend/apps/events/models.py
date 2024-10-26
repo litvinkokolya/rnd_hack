@@ -19,9 +19,10 @@ class Event(models.Model):
     image = models.ImageField(upload_to="event_images", null=True, blank=True)
     description = models.CharField(max_length=500, null=True, blank=True)
     tags = ArrayField(models.CharField(max_length=50), blank=True)
-    max_members = models.PositiveIntegerField(null=True, blank=True)
+    max_members = models.PositiveIntegerField(null=True, blank=True) #TODO: проверять чтобы нельзя было больше этого количества
     for_whom = models.IntegerField(choices=FOR_WHOM_CHOICES, null=True, blank=True)
     count_photo = models.IntegerField(null=True, blank=True)
+    prize = models.CharField(max_length=100, null=True, blank=True)
     is_video = models.BooleanField(null=True, blank=True)
     criteries = ArrayField(models.CharField(max_length=50), blank=True)
     created_date = models.DateField(auto_now_add=True)
