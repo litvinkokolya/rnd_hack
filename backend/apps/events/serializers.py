@@ -51,6 +51,15 @@ class WorkSerializer(serializers.ModelSerializer):
         model = Work
         fields = '__all__'
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        unique_results = instance.result.order_by("reviewer").distinct("reviewer")
+
+        representation["result_sum"] = sum(result.balls for result in unique_results)
+
+        return representation
+
     def get_preview(self, obj) -> str:
         preview = obj.images_work.first()
         if preview and preview.image:

@@ -230,7 +230,7 @@ class Work(models.Model):
     def result_sum(self):
         unique_results = self.result.order_by("reviewer").distinct("reviewer")
 
-        return sum(result.score for result in unique_results)
+        return sum(result.balls for result in unique_results)
 
     class Meta:
         verbose_name = "Работа"
