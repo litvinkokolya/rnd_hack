@@ -19,13 +19,21 @@ class EventSerializer(serializers.ModelSerializer):
     achievement_winner = AchievementSerializer()
     achievement_member = AchievementSerializer()
     is_participation = serializers.SerializerMethodField()
+    winner = serializers.SerializerMethodField()
     created_mine = serializers.SerializerMethodField()
 
     def get_created_mine(self, obj) -> bool:
         user = self.context.get("request").user
-        if Event.objects.filter(created_by=user).exists():
+        if Event.objects.filter(pk=obj.pk, created_by=user).exists():
             return True
         return False
+
+    def get_winner(self, obj) -> bool:
+        user = self.context.get("request").user
+        if Member.objects.filter(event__pk=obj.pk, event__is_finished=True).exists():
+            return user.get_full_name()
+        else:
+            'Победителя пока нет'
 
     def get_is_participation(self, obj) -> bool:
         user = self.context.get("request").user
