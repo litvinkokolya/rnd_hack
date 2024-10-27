@@ -19,7 +19,7 @@ function start_back(){
 
 function start_bot(){
     tmux split-window -h
-    tmux send-keys -t $1 "cd telegrambot && source venv/bin/activate && python main.py" C-m
+    tmux send-keys -t $1 "cd backend && source venv/bin/activate && cd ../telegrambot && python main.py" C-m
 }
 
 #function start_celery() {
