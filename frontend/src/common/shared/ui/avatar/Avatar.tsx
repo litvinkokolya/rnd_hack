@@ -1,6 +1,7 @@
 import styles from "./Avatar.module.scss";
 import { IUser } from "common/shared/types";
 import cn from "classnames";
+import { BASE_API_URL } from "common/shared/api/endpoints";
 
 interface IAvatarProps {
   edit?: boolean;
@@ -20,7 +21,7 @@ const Avatar = ({ edit = false, user }: IAvatarProps) => {
       >
         {avatarSrc && (
           <img
-            src={`${process.env.NEXT_PUBLIC_BASE_API_URL}${avatarSrc}`}
+            src={`${BASE_API_URL}${avatarSrc}`}
             className={styles.user_avatar}
             alt={`${user?.first_name} ${user?.last_name}`}
             width={150}

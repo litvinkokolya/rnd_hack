@@ -9,6 +9,8 @@ import { toast } from "react-toast";
 import { useRouter } from "next/router";
 import { setWork } from "common/shared/api/works";
 import { patchChallenege } from "common/shared/api/champs";
+import { axiosInstanse } from "common/shared/api/instanse";
+import { BASE_API_URL } from "common/shared/api/endpoints";
 
 export const ShowChallenge = ({
   isOpen,
@@ -21,6 +23,31 @@ export const ShowChallenge = ({
   champ: any;
   refetch: () => void;
 }) => {
+  const handleDownload = async () => {
+    try {
+      const response = await axiosInstanse.get(
+        `${BASE_API_URL}/print-overdue/`,
+        {
+          //@ts-ignore
+          params: { selectedYear: this?.selectedYear },
+          responseType: "blob",
+        }
+      );
+
+      const filename =
+        response.headers["content-disposition"].match(/filename=(.+)/)[1];
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
   const [_selectedChamp, setSelectedChamp] = useAtom(champAtom);
@@ -114,9 +141,12 @@ export const ShowChallenge = ({
                   Макс. кол-во участников: <span>{champ.max_members}</span>
                 </label>
                 {champ.winner && (
-                  <label>
-                    ПОБЕДИТЕЛЬ: <span>{champ.winner}</span>
-                  </label>
+                  <>
+                    <label>
+                      ПОБЕДИТЕЛЬ: <span>{champ.winner}</span>
+                    </label>
+                    <Button onClick={handleDownload}>Скачать результат</Button>
+                  </>
                 )}
               </div>
               <div className={styles.champ}>

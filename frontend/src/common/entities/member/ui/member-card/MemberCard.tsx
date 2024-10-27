@@ -3,6 +3,7 @@ import Link from "next/link";
 import styles from "./MemberCard.module.scss";
 import { declineNumberOfBalls } from "common/shared/helpers";
 import cn from "classnames";
+import { BASE_API_URL } from "common/shared/api/endpoints";
 
 export const MemberCard: FC<any> = ({ member: work }) => {
   const { preview, id, result_sum, is_filled_mine, is_done, is_my_mark } = work;
@@ -50,7 +51,7 @@ export const MemberCard: FC<any> = ({ member: work }) => {
                   width={55}
                   height={55}
                   className={styles.members__avatar}
-                  src={`${process.env.NEXT_PUBLIC_BASE_API_URL}${preview}`}
+                  src={`${BASE_API_URL}${preview}`}
                 />
               </div>
             </div>
