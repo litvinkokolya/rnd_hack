@@ -113,6 +113,11 @@ export const ShowChallenge = ({
                 <label>
                   Макс. кол-во участников: <span>{champ.max_members}</span>
                 </label>
+                {champ.winner && (
+                  <label>
+                    ПОБЕДИТЕЛЬ: <span>{champ.winner}</span>
+                  </label>
+                )}
               </div>
               <div className={styles.champ}>
                 <label>

@@ -64,12 +64,15 @@ export const EvaluationModal = () => {
                   >
                     <a
                       data-fancybox
+                      //@ts-ignore
                       data-src={memberData.image}
+                      //@ts-ignore
                       href={memberData.image as string}
                       className={styles.member_photos__link}
                     >
                       <img
                         className={styles.evaluation__img}
+                        //@ts-ignore
                         src={memberData.image as string}
                         width={75}
                         height={75}
