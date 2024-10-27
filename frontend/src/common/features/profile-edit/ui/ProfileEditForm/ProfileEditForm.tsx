@@ -177,7 +177,19 @@ export const ProfileEditForm: FC = () => {
           </div>
           <p className={styles.create}>
             Создать челлендж -
-            <Button onClick={() => setIsCreateModalOpen(true)}>➕</Button>
+            {champsData?.data.some(
+              // @ts-ignore
+              (item) => !item.is_finished && item.created_mine
+            )}
+            <Button
+              disabled={champsData?.data.some(
+                // @ts-ignore
+                (item) => !item.is_finished && item.created_mine
+              )}
+              onClick={() => setIsCreateModalOpen(true)}
+            >
+              ➕
+            </Button>
           </p>
           <CreateChallengeModal
             isOpen={isCreateModalOpen}
@@ -187,6 +199,7 @@ export const ProfileEditForm: FC = () => {
           <ChampsList
             isLoading={isLoading}
             champsData={champsData}
+            refetch={refetch}
             disableChamps={
               literalValidation(name) ||
               literalValidation(lastname) ||

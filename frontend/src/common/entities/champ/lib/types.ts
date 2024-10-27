@@ -26,6 +26,7 @@ export interface IChamp {
 
 export interface ChampCardProps {
   champ: IChamp;
+  refetch: () => void;
   disableChamp: boolean;
 }
 

@@ -40,8 +40,6 @@ export const CreateChallengeForm = ({
 }) => {
   const { data } = useQuery("master", () => getAchievements());
 
-  console.log(data?.data);
-
   const createChallenge = async (params: any) => {
     try {
       const { data } = await createChallengeRequest(params);

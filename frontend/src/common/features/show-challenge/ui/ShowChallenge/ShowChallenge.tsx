@@ -8,15 +8,18 @@ import { champAtom, userAtom } from "store";
 import { toast } from "react-toast";
 import { useRouter } from "next/router";
 import { setWork } from "common/shared/api/works";
+import { patchChallenege } from "common/shared/api/champs";
 
 export const ShowChallenge = ({
   isOpen,
   onClose,
   champ,
+  refetch,
 }: {
   isOpen: boolean;
   onClose: () => void;
   champ: any;
+  refetch: () => void;
 }) => {
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
@@ -46,6 +49,10 @@ export const ShowChallenge = ({
     setUser({ ...user!, memberId: data.id, workId: work.data.id });
     router.push("./profile");
     setSelectedChamp(champ);
+  });
+
+  const stopChallengeMutation = useMutation(["setMember"], async () => {
+    await patchChallenege(champ.id, { is_finished: true });
   });
 
   return (
@@ -118,20 +125,20 @@ export const ShowChallenge = ({
                 <label>
                   Достижение участника:{" "}
                   <span className={styles.achievement}>
-                    {champ.achievement_member.name}
+                    {champ?.achievement_member?.name}
                     <img
                       className={styles.img}
-                      src={champ.achievement_member.image}
+                      src={champ?.achievement_member?.image}
                     />
                   </span>
                 </label>
                 <label>
                   Достижение победителя:{" "}
                   <span className={styles.achievement}>
-                    {champ.achievement_winner.name}
+                    {champ?.achievement_winner?.name}
                     <img
                       className={styles.img}
-                      src={champ.achievement_winner.image}
+                      src={champ?.achievement_winner?.image}
                     />
                   </span>
                 </label>
@@ -140,26 +147,46 @@ export const ShowChallenge = ({
                 </label>
               </div>
             </div>
-            {champ.is_participation ? (
+            {!champ.is_finished ? (
               <>
-                <p>Вы являетесь участником!</p>
-                <Button
-                  onClick={() => {
-                    setSelectedChamp(champ);
-                    router.push("./profile");
-                  }}
-                >
-                  Перейти в челлендж
-                </Button>
+                {champ.is_participation ? (
+                  <>
+                    <p>Вы являетесь участником!</p>
+                    <Button
+                      onClick={() => {
+                        setSelectedChamp(champ);
+                        router.push("./profile");
+                      }}
+                    >
+                      Перейти в челлендж
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      loginUserMutation.mutate();
+                    }}
+                  >
+                    Принять участие
+                  </Button>
+                )}
+                {champ.created_mine && (
+                  <Button
+                    onClick={async () => {
+                      if (confirm("Вы точно хотите завершить челлендж?")) {
+                        await stopChallengeMutation.mutateAsync();
+                        toast.success("Челлендж успешно завершен!");
+                        onClose();
+                        refetch();
+                      }
+                    }}
+                  >
+                    Завершить челлендж
+                  </Button>
+                )}
               </>
             ) : (
-              <Button
-                onClick={() => {
-                  loginUserMutation.mutate();
-                }}
-              >
-                Принять участие
-              </Button>
+              <p>Челлендж закончен!</p>
             )}
           </motion.div>
         </>

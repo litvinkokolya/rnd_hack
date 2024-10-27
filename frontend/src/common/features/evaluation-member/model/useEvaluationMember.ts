@@ -6,7 +6,6 @@ import { useAtomValue } from "jotai";
 
 export const useMember = (memberId: number) => {
   const champ = useAtomValue(champAtom);
-  const user = useAtomValue(userAtom);
   const criteriesStore = champ?.criteries.map((critery) => {
     return {
       name: critery,

@@ -4,7 +4,7 @@ import { USER_IS_UNKNOWN } from "common/shared/constants";
 import { ShowChallenge } from "common/features/show-challenge/ui";
 import { useState } from "react";
 
-export const ChampCard = ({ champ, disableChamp }: ChampCardProps) => {
+export const ChampCard = ({ champ, disableChamp, refetch }: ChampCardProps) => {
   const [openChallengeModal, setOpenChallengeModal] = useState(false);
 
   const isButtonDisabled = champ.role === USER_IS_UNKNOWN || disableChamp;
@@ -27,6 +27,7 @@ export const ChampCard = ({ champ, disableChamp }: ChampCardProps) => {
         isOpen={openChallengeModal}
         onClose={() => setOpenChallengeModal(false)}
         champ={champ}
+        refetch={refetch}
       />
     </>
   );

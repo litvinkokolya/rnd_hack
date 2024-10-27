@@ -3,7 +3,7 @@ import { useAtomValue } from "jotai";
 import { userAtom } from "store";
 import { IResult, SetMemberResultProps } from "../lib";
 import { setMemberResults } from "common/shared/api/assessments";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 export const useSetMemberResult = ({
   totalScore,
@@ -26,12 +26,11 @@ export const useSetMemberResult = ({
           result.score_retail![attribute.name] = attribute.score.toString();
         }
       });
-      console.log(result);
       //@ts-ignore
       setMemberResults({ ...result, score: result.score_retail });
       router.push({
         pathname: "/profile",
-        query: { score: totalScore },
+        query: { evaluation: id, score: totalScore },
       });
     } catch (e) {
       console.error(e);

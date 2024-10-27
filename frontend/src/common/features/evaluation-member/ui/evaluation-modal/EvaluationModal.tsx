@@ -1,39 +1,25 @@
-import { useEffect, useState } from 'react';
-import styles from './EvaluationModal.module.scss';
-import Link from 'next/link';
-import Image from 'next/image';
-import CloseIcon from '@/public/images/close-icon.svg';
-import WhatsAppIcon from '@/public/images/whatsapp-icon.svg';
-import { getUser } from 'common/shared/api/users';
-import { useQuery } from 'react-query';
-import { useRouter } from 'next/router';
-import '@fancyapps/ui/dist/fancybox/fancybox.css';
-import { Fancybox } from '@fancyapps/ui';
-import Confetti from 'react-confetti';
-import { useMember } from '../../model/useEvaluationMember';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from "react";
+import styles from "./EvaluationModal.module.scss";
+import Image from "next/image";
+import CloseIcon from "@/public/images/close-icon.svg";
+import { useRouter } from "next/router";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import { Fancybox } from "@fancyapps/ui";
+import Confetti from "react-confetti";
+import { useMember } from "../../model/useEvaluationMember";
+import { motion } from "framer-motion";
 
 export const EvaluationModal = () => {
   const router = useRouter();
   const { evaluation, score } = router.query;
-  const { member, memberPhotos } = useMember(Number(evaluation!));
-  const { data: master } = useQuery(
-    'master',
-    () => getUser(member?.id_member!),
-    {
-      enabled: !!member?.id_member,
-    }
-  );
+  const { memberPhotos } = useMember(Number(evaluation!));
 
-  const whatsappLink = () => {
-    if (!master || !member) return '';
-    return `https://api.whatsapp.com/send/?phone=${master?.data.phone_number}&text=Добрый день, ${master?.data.first_name}! Я оценил(а) вашу работу в номинации - ${member?.nomination} ${member?.category}!`;
-  };
+  console.log(memberPhotos?.filter((item: any) => item.work.id == evaluation));
 
   const [evaluationModalOpen, setEvaluationModalOpen] = useState(!!evaluation);
 
   useEffect(() => {
-    Fancybox.bind('[data-fancybox]', {
+    Fancybox.bind("[data-fancybox]", {
       Toolbar: false,
       Images: { zoom: false },
     });
@@ -45,8 +31,8 @@ export const EvaluationModal = () => {
   };
 
   const modalVariants = {
-    hidden: { y: '-100%', opacity: 0, transition: { duration: .8 } },
-    visible: { y: '0%', opacity: 1, transition: { duration: .8 } },
+    hidden: { y: "-100%", opacity: 0, transition: { duration: 0.8 } },
+    visible: { y: "0%", opacity: 1, transition: { duration: 0.8 } },
   };
 
   return (
@@ -70,40 +56,30 @@ export const EvaluationModal = () => {
             <p className={styles.evaluation__modal_separation}>Успешно!</p>
             <ul className={styles.evaluation__list}>
               {memberPhotos
-                ?.filter((memberData) => memberData.before_after === 'AF')
-                .map((memberData) => (
-                  <li key={memberData.id} className={styles.evaluation__item}>
+                ?.filter((item: any) => item.work.id == evaluation)
+                ?.map((memberData) => (
+                  <li
+                    key={memberData.work.id}
+                    className={styles.evaluation__item}
+                  >
                     <a
                       data-fancybox
-                      data-src={memberData.photo}
-                      href={memberData.photo as string}
+                      data-src={memberData.image}
+                      href={memberData.image as string}
                       className={styles.member_photos__link}
                     >
                       <img
                         className={styles.evaluation__img}
-                        src={memberData.optimized_photo || memberData.photo as string}
+                        src={memberData.image as string}
                         width={75}
                         height={75}
-                        alt={memberData.name}
                       />
                     </a>
-                    <span className={styles.evaluation__name}>
-                      {memberData.name}
-                    </span>
                   </li>
                 ))}
             </ul>
-            <h3 className={styles.evaluation__category}>
-              {member?.nomination} {member?.category}
-            </h3>
             <p className={styles.evaluation__total}>
               Сумма баллов: <span>{score}</span>
-            </p>
-            <p className={styles.evaluation__comment}>
-              Дать комментарий
-              <Link target="_blank" href={whatsappLink()}>
-                <Image width={22} src={WhatsAppIcon} alt="WhatsApp" />
-              </Link>
             </p>
           </motion.div>
           <Confetti
@@ -113,12 +89,12 @@ export const EvaluationModal = () => {
             tweenDuration={1000}
             wind={0.04}
             colors={[
-              '#ffb6c1',
-              '#ff80ab',
-              '#ff4081',
-              '#f50057',
-              '#c51162',
-              '#FF3E9B',
+              "#ffb6c1",
+              "#ff80ab",
+              "#ff4081",
+              "#f50057",
+              "#c51162",
+              "#FF3E9B",
             ]}
           />
         </>

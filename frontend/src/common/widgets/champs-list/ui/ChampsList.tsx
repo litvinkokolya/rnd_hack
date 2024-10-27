@@ -6,10 +6,12 @@ export const ChampsList = ({
   disableChamps,
   isLoading,
   champsData,
+  refetch,
 }: {
   disableChamps: boolean;
   isLoading: boolean;
   champsData?: any;
+  refetch: () => void;
 }) => {
   if (isLoading) {
     return (
@@ -38,7 +40,11 @@ export const ChampsList = ({
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <ChampCard disableChamp={disableChamps} champ={champ} />
+                <ChampCard
+                  refetch={refetch}
+                  disableChamp={disableChamps}
+                  champ={champ}
+                />
               </motion.li>
             </>
           );
