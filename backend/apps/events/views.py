@@ -1,7 +1,11 @@
+from django.db.models import Sum
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 
+from utils.doc_renderer import DocRenderer
+from utils.file_response import make_file_response
 from .models import Achievement, Event, Member, Work, ImagesWork, Result
 from .permissions import AuthenticatedOrTelegramBot
 from .serializers import AchievementSerializer, EventSerializer, MemberSerializer, WorkSerializer, ImagesWorkSerializer, \
@@ -25,6 +29,34 @@ class EventViewSet(viewsets.ModelViewSet):
         if self.request.method == 'POST':
             return EventCreateSerializer
         return EventSerializer
+
+    @action(methods=['get'], detail=True, url_path='print', url_name='print')
+    def print_form(self, request, pk=None):
+        event = self.get_object()
+
+        data = {}
+
+        data['name'] = event.name
+        data['description'] = event.description
+        data['prize'] = event.prize
+        data['winner'] = event.member.user.get_full_name()
+        data['records'] = []
+
+        members = event.member.all()
+        members = members.annotate(
+            result_sum=Sum('work__result__balls')
+        )
+        sorted_members = members.order_by('-result_sum')
+
+        for member in sorted_members:
+            data['records'].append({
+                'full_name': member.user.get_full_name(),
+                'score': member.work.result_sum
+            })
+
+        renderer = DocRenderer('winners.odt')
+
+        return make_file_response(renderer.render(data), 'Таблица результатов.odt')
 
 
 class MemberViewSet(viewsets.ModelViewSet):
