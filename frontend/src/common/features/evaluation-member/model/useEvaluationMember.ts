@@ -1,12 +1,12 @@
-import { getMemberAssessmentsAttributes } from "common/shared/api/assessments";
-import { getMemberPhotos, getMember } from "common/shared/api/members";
-import { useState, useCallback, ChangeEvent, useEffect } from "react";
+import { getMemberPhotos } from "common/shared/api/members";
+import { useState, useCallback, ChangeEvent } from "react";
 import { useQuery } from "react-query";
-import { champAtom } from "store";
+import { champAtom, userAtom } from "store";
 import { useAtomValue } from "jotai";
 
 export const useMember = (memberId: number) => {
   const champ = useAtomValue(champAtom);
+  const user = useAtomValue(userAtom);
   const criteriesStore = champ?.criteries.map((critery) => {
     return {
       name: critery,
@@ -25,31 +25,6 @@ export const useMember = (memberId: number) => {
     }
   );
 
-  const { data: memberData, isLoading: isMemberLoading } = useQuery(
-    ["member", memberId],
-    () => getMember(memberId),
-    {
-      enabled: !!memberId,
-    }
-  );
-
-  const {
-    data: memberAssessmentsAttributesData,
-    isLoading: isAttributesLoading,
-  } = useQuery(
-    "memberAssessmentsAttributes",
-    () => getMemberAssessmentsAttributes(memberId),
-    {
-      enabled: !!memberId,
-    }
-  );
-
-  useEffect(() => {
-    if (memberAssessmentsAttributesData) {
-      setCriteries(memberAssessmentsAttributesData.data);
-    }
-  }, [memberAssessmentsAttributesData]);
-
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>, attribute: any) => {
       const newScore = Number(e.target.value);
@@ -66,11 +41,10 @@ export const useMember = (memberId: number) => {
   );
 
   return {
-    member: memberData?.data,
     memberPhotos: memberPhotosData?.data,
     memberAttributes: criteries,
     totalScore,
-    isLoading: isPhotosLoading || isMemberLoading || isAttributesLoading,
+    isLoading: isPhotosLoading,
     handleChange,
   };
 };

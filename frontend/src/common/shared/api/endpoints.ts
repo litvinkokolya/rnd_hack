@@ -12,6 +12,9 @@ export const ENDPOINTS = {
     ME: `${BASE_API_URL}/api/v1/users/me/`,
     USER: `${BASE_API_URL}/api/v1/users/`,
   },
+  ACHIEVEMENTS: {
+    ACHIEVEMENTS: `${BASE_API_URL}/api/v1/achievements/`,
+  },
   MEMBERS: {
     MEMBERS: `${BASE_API_URL}/api/v1/members/`,
     PHOTOS: `${BASE_API_URL}/api/v1/image_works/`,

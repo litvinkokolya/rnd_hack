@@ -6,7 +6,6 @@ import { setMemberResults } from "common/shared/api/assessments";
 import router, { useRouter } from "next/router";
 
 export const useSetMemberResult = ({
-  memberId,
   totalScore,
   memberAttributes,
 }: SetMemberResultProps) => {
@@ -32,7 +31,7 @@ export const useSetMemberResult = ({
       setMemberResults({ ...result, score: result.score_retail });
       router.push({
         pathname: "/profile",
-        query: { evaluation: memberId, score: totalScore },
+        query: { score: totalScore },
       });
     } catch (e) {
       console.error(e);

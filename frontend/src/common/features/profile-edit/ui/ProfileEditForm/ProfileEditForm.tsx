@@ -17,8 +17,14 @@ import { useDebounce } from "../../model";
 import { LogoutModal } from "common/features/logout/ui";
 import { Textarea } from "common/shared/ui/textarea";
 import { CreateChallengeModal } from "common/features/create-challenge/ui/CreateChallengeModal";
+import { getChamps } from "common/shared/api/champs";
 
 export const ProfileEditForm: FC = () => {
+  const {
+    data: champsData,
+    isLoading,
+    refetch,
+  } = useQuery("champs", getChamps);
   const { control, setValue } = useForm();
   const user = useAtomValue(userAtom);
   const [isClient, setIsClient] = useState(false);
@@ -176,8 +182,11 @@ export const ProfileEditForm: FC = () => {
           <CreateChallengeModal
             isOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
+            refetch={refetch}
           />
           <ChampsList
+            isLoading={isLoading}
+            champsData={champsData}
             disableChamps={
               literalValidation(name) ||
               literalValidation(lastname) ||

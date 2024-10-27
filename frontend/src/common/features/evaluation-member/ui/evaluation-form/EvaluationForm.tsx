@@ -11,7 +11,6 @@ import { useRouter } from "next/router";
 
 export const EvaluationForm = ({ memberId }: IEvaluationFormProps) => {
   const {
-    member,
     memberPhotos,
     memberAttributes,
     totalScore,
@@ -27,7 +26,6 @@ export const EvaluationForm = ({ memberId }: IEvaluationFormProps) => {
 
   const { mutateAsync: postResult, isLoading: isResultLoading } =
     useSetMemberResult({
-      memberId: member?.id!,
       totalScore,
       memberAttributes,
     });
@@ -35,6 +33,10 @@ export const EvaluationForm = ({ memberId }: IEvaluationFormProps) => {
   if (isLoading) {
     return <Loader fullPage />;
   }
+
+  const workVileo = memberPhotos?.find((item) => {
+    return item.work.id == id;
+  })?.work.url_message_video;
 
   return (
     <>
@@ -44,7 +46,7 @@ export const EvaluationForm = ({ memberId }: IEvaluationFormProps) => {
           memberPhotos?.filter((item: any) => item.work.id == id) || []
         }
       />
-      <VideoLink member={member!} />
+      <VideoLink workVideo={workVileo} />
       <EvaluationCriteriaForm
         attributes={memberAttributes}
         totalScore={totalScore}

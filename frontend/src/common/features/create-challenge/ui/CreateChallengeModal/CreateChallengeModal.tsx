@@ -5,9 +5,11 @@ import { CreateChallengeForm } from "../CreateChallengeForm";
 export const CreateChallengeModal = ({
   isOpen,
   onClose,
+  refetch,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  refetch: () => void;
 }) => {
   return (
     <AnimatePresence>
@@ -21,7 +23,7 @@ export const CreateChallengeModal = ({
             transition={{ duration: 0.2 }}
             className={styles.modal_exit}
           >
-            <CreateChallengeForm onClose={onClose} />
+            <CreateChallengeForm refetch={refetch} onClose={onClose} />
           </motion.div>
         </>
       )}

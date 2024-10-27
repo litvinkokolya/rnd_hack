@@ -15,5 +15,8 @@ export const setMemberResults = (
 ): AxiosPromise<IResult> =>
   axiosInstanse.post(ENDPOINTS.ASSESSMENTS.RESULTS, data);
 
+export const getAchievements = (): AxiosPromise<any[]> =>
+  axiosInstanse.get(ENDPOINTS.ACHIEVEMENTS.ACHIEVEMENTS);
+
 export const getMemberResults = (workId: number): AxiosPromise<IResult[]> =>
   axiosInstanse.get(ENDPOINTS.ASSESSMENTS.RESULTS + "?work=" + workId);

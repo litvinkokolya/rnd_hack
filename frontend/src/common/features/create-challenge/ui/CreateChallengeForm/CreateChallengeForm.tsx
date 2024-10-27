@@ -11,8 +11,10 @@ import { Button } from "common/shared/ui/button";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createChallenge as createChallengeRequest } from "common/shared/api/champs";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toast";
+import { getAchievements } from "common/shared/api/assessments";
+import Select from "react-select";
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Заголовок челленджа обязателен"),
@@ -25,11 +27,21 @@ const validationSchema = yup.object().shape({
   participantAchievement: yup.mixed(),
   participantPrize: yup.mixed(),
   winnerAchievement: yup.mixed(),
-  endDate: yup.mixed(),
+  endDate: yup.mixed().required("Дата окончания челленджа обязательна"),
   winnerPrize: yup.mixed(),
 });
 
-export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
+export const CreateChallengeForm = ({
+  onClose,
+  refetch,
+}: {
+  onClose: () => void;
+  refetch: () => void;
+}) => {
+  const { data } = useQuery("master", () => getAchievements());
+
+  console.log(data?.data);
+
   const createChallenge = async (params: any) => {
     try {
       const { data } = await createChallengeRequest(params);
@@ -50,6 +62,7 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
   );
 
   const onSubmit = async (data: any) => {
+    console.log(data);
     const params = {
       ...data,
       tags: challengeTags.map((tag) => tag.id),
@@ -59,6 +72,8 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
       count_photo: data.photoCount,
       for_whom: data.forWho,
       max_members: data.maxParticipants,
+      achievement_winner: data.winnerAchievement.value,
+      achievement_member: data.participantAchievement.value,
     };
     const formData = new FormData();
     formData.append("image", params.image);
@@ -77,6 +92,7 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
 
     await createChallengeMutation.mutateAsync(formData);
     onClose();
+    refetch();
     toast.success("Челлендж успешно создан!");
   };
 
@@ -136,7 +152,6 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-  console.log(errors);
 
   return (
     <div className={styles.modal}>
@@ -338,8 +353,11 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
             name="endDate"
             render={({ field }) => (
               <>
-                <label className={styles.label}>Дата окончания:</label>
+                <label className={styles.label}>
+                  Дата окончания: <span style={{ color: "red" }}>*</span>
+                </label>
                 <DatePicker
+                  //@ts-ignore
                   selected={field.value}
                   onChange={(date) => field.onChange(date)}
                   dateFormat="yyyy-MM-dd"
@@ -406,13 +424,23 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
             render={({ field }) => (
               <>
                 <label className={styles.label}>Достижение победителя:</label>
-                <Input
-                  maxLength={255}
-                  minLength={2}
-                  autofocus={!field.value}
-                  type="text"
-                  placeholder="Введите достижение победителя"
+                <Select
+                  placeholder="Выберите достижение победителя"
                   {...field}
+                  // @ts-ignore
+                  options={data?.data?.map((item) => ({
+                    value: item.id,
+                    label: (
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          style={{ width: "20px", marginRight: "10px" }}
+                        />
+                        {item.name}
+                      </div>
+                    ),
+                  }))}
                 />
               </>
             )}
@@ -423,13 +451,23 @@ export const CreateChallengeForm = ({ onClose }: { onClose: () => void }) => {
             render={({ field }) => (
               <>
                 <label className={styles.label}>Достижение участника:</label>
-                <Input
-                  maxLength={255}
-                  minLength={2}
-                  autofocus={!field.value}
-                  type="text"
-                  placeholder="Введите достижение участника"
+                <Select
+                  placeholder="Выберите достижение участника"
                   {...field}
+                  // @ts-ignore
+                  options={data?.data?.map((item) => ({
+                    value: item.id,
+                    label: (
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          style={{ width: "20px", marginRight: "10px" }}
+                        />
+                        {item.name}
+                      </div>
+                    ),
+                  }))}
                 />
               </>
             )}

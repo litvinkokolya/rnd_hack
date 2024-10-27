@@ -1,12 +1,16 @@
-import { ChampCard, ChampCardSkeleton } from "common/entities/champ";
-import { getChamps } from "common/shared/api/champs";
-import { useQuery } from "react-query";
+import { ChampCard, ChampCardSkeleton, IChamp } from "common/entities/champ";
 import styles from "./Champs-list.module.scss";
 import { AnimatePresence, motion } from "framer-motion";
 
-export const ChampsList = ({ disableChamps }: { disableChamps: boolean }) => {
-  const { data: champsData, isLoading } = useQuery("champs", getChamps);
-
+export const ChampsList = ({
+  disableChamps,
+  isLoading,
+  champsData,
+}: {
+  disableChamps: boolean;
+  isLoading: boolean;
+  champsData?: any;
+}) => {
   if (isLoading) {
     return (
       <AnimatePresence>
@@ -25,7 +29,7 @@ export const ChampsList = ({ disableChamps }: { disableChamps: boolean }) => {
     <>
       <h3>Доступные Челленджи:</h3>
       <ul className={styles.champs__list}>
-        {champsData?.data?.map((champ, index) => {
+        {champsData?.data?.map((champ: IChamp, index: number) => {
           return (
             <>
               <motion.li

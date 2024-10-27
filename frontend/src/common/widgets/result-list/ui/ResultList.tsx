@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { useQuery } from "react-query";
 import styles from "./ResultList.module.scss";
 import { IResult } from "common/features/evaluation-member/lib";
+import { ClimbingBoxLoader } from "react-spinners";
 
 export const ResultList = () => {
   const router = useRouter();
@@ -77,7 +78,10 @@ export const ResultList = () => {
           </div>
         </>
       ) : (
-        <Loader />
+        <div style={{ marginTop: "80px" }}>
+          <p>Идёт оценивание...</p>
+          <ClimbingBoxLoader />
+        </div>
       )}
     </>
   );

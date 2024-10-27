@@ -38,7 +38,6 @@ export interface IResult {
 }
 
 export interface SetMemberResultProps {
-  memberId: number;
   totalScore: number;
   memberAttributes: IMemberAssessmentsAttributes[];
 }

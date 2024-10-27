@@ -1,14 +1,14 @@
-import { IMember } from 'common/entities/member';
-import Link from 'next/link';
-import styles from './VideoLink.module.scss';
+import { IMember } from "common/entities/member";
+import Link from "next/link";
+import styles from "./VideoLink.module.scss";
 
-export const VideoLink = ({ member }: { member: IMember }) => {
+export const VideoLink = ({ workVideo }: { workVideo: string }) => {
   return (
     <>
-      {member?.url_message_video ? (
+      {workVideo ? (
         <Link
           target="_blank"
-          href={member?.url_message_video}
+          href={workVideo}
           className={styles.result__video_link}
         >
           Посмотреть Видео Работы

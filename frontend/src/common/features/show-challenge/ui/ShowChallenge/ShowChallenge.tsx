@@ -3,7 +3,7 @@ import styles from "./ShowChallenge.module.scss";
 import { Button } from "common/shared/ui/button";
 import { useMutation } from "react-query";
 import { setMember } from "common/shared/api/members";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { champAtom, userAtom } from "store";
 import { toast } from "react-toast";
 import { useRouter } from "next/router";
@@ -44,7 +44,7 @@ export const ShowChallenge = ({
     const work = await setWork({ event: champ.id, member: data?.id });
     //@ts-ignore
     setUser({ ...user!, memberId: data.id, workId: work.data.id });
-    router.push("./profile?challenge=" + champ.id);
+    router.push("./profile");
     setSelectedChamp(champ);
   });
 
@@ -99,14 +99,15 @@ export const ShowChallenge = ({
                 <label>
                   Дата создания: <span>{champ.created_date}</span>
                 </label>
-              </div>
-              <div className={styles.champ}>
+
                 <label>
                   Дата окончания: <span>{champ.end_date}</span>
                 </label>
                 <label>
                   Макс. кол-во участников: <span>{champ.max_members}</span>
                 </label>
+              </div>
+              <div className={styles.champ}>
                 <label>
                   Возможность добавить видео:{" "}
                   <span>{champ.is_video ? "Да" : "Нет"}</span>
@@ -115,10 +116,24 @@ export const ShowChallenge = ({
                   Приз: <span>{champ.prize}</span>
                 </label>
                 <label>
-                  Достижение участника: <span>{champ.achievement_member}</span>
+                  Достижение участника:{" "}
+                  <span className={styles.achievement}>
+                    {champ.achievement_member.name}
+                    <img
+                      className={styles.img}
+                      src={champ.achievement_member.image}
+                    />
+                  </span>
                 </label>
                 <label>
-                  Достижение победителя: <span>{champ.achievement_winner}</span>
+                  Достижение победителя:{" "}
+                  <span className={styles.achievement}>
+                    {champ.achievement_winner.name}
+                    <img
+                      className={styles.img}
+                      src={champ.achievement_winner.image}
+                    />
+                  </span>
                 </label>
                 <label>
                   Закончен: <span>{champ.is_finished ? "Да" : "Нет"}</span>
@@ -131,7 +146,7 @@ export const ShowChallenge = ({
                 <Button
                   onClick={() => {
                     setSelectedChamp(champ);
-                    router.push("./profile?challenge=" + champ.id);
+                    router.push("./profile");
                   }}
                 >
                   Перейти в челлендж
