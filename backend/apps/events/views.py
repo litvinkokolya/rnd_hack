@@ -36,10 +36,15 @@ class EventViewSet(viewsets.ModelViewSet):
 
         data = {}
 
+        winner_member = event.member.filter(winner=True).first()
+        if winner_member:
+            data['winner'] = winner_member.user.get_full_name()
+        else:
+            data['winner'] = 'Победителя пока нет'
+
         data['name'] = event.name
         data['description'] = event.description
         data['prize'] = event.prize
-        data['winner'] = event.member.user.get_full_name()
         data['records'] = []
 
         members = event.member.all()
@@ -49,10 +54,11 @@ class EventViewSet(viewsets.ModelViewSet):
         sorted_members = members.order_by('-result_sum')
 
         for member in sorted_members:
-            data['records'].append({
-                'full_name': member.user.get_full_name(),
-                'score': member.work.result_sum
-            })
+            if member.user:
+                data['records'].append({
+                    'full_name': member.user.get_full_name(),
+                    'score': member.result_sum
+                })
 
         renderer = DocRenderer('winners.odt')
 
