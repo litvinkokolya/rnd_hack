@@ -23,7 +23,6 @@ const UploadPhotoForm = () => {
       photo: null,
     }))
   );
-  console.log(selectedFiles);
 
   const { handleFileChange } = useFileChange({
     setSelectedFiles,

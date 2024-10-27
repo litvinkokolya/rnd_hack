@@ -32,6 +32,9 @@ export interface IResult {
   score_retail?: {
     [key: string]: number | string;
   };
+  balls?: number;
+  work?: number;
+  reviewer?: number;
 }
 
 export interface SetMemberResultProps {

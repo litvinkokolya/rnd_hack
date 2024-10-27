@@ -18,7 +18,6 @@ import { getWorks } from "common/shared/api/works";
 function ProfilePage() {
   const champ = useAtomValue(champAtom);
   const user = useAtomValue(userAtom);
-  console.log(champ);
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const [works, setWorks] = useState<any[]>();
@@ -51,7 +50,7 @@ function ProfilePage() {
           <UserName />
           <UserRole />
           <UserAction role={champ?.role!} />
-          {works?.some((work) => work.is_mine) ? null : (
+          {works?.some((work) => work.is_filled_mine) ? null : (
             <Button
               onClick={() => {
                 router.push("/upload-photo");

@@ -1,17 +1,24 @@
-import { getMemberAssessmentsAttributes } from 'common/shared/api/assessments';
-import { getMemberPhotos, getMember } from 'common/shared/api/members';
-import { useState, useCallback, ChangeEvent, useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { IMemberAssessmentsAttributes } from '../lib';
+import { getMemberAssessmentsAttributes } from "common/shared/api/assessments";
+import { getMemberPhotos, getMember } from "common/shared/api/members";
+import { useState, useCallback, ChangeEvent, useEffect } from "react";
+import { useQuery } from "react-query";
+import { champAtom } from "store";
+import { useAtomValue } from "jotai";
 
 export const useMember = (memberId: number) => {
-  const [memberAttributes, setMemberAttributes] = useState<
-    IMemberAssessmentsAttributes[]
-  >([]);
+  const champ = useAtomValue(champAtom);
+  const criteriesStore = champ?.criteries.map((critery) => {
+    return {
+      name: critery,
+      score: 0,
+    };
+  });
+  const [criteries, setCriteries] = useState<any>(criteriesStore);
+
   const [totalScore, setTotalScore] = useState(0);
 
   const { data: memberPhotosData, isLoading: isPhotosLoading } = useQuery(
-    'memberPhotos',
+    "memberPhotos",
     () => getMemberPhotos(memberId),
     {
       enabled: !!memberId,
@@ -19,7 +26,7 @@ export const useMember = (memberId: number) => {
   );
 
   const { data: memberData, isLoading: isMemberLoading } = useQuery(
-    ['member', memberId],
+    ["member", memberId],
     () => getMember(memberId),
     {
       enabled: !!memberId,
@@ -30,7 +37,7 @@ export const useMember = (memberId: number) => {
     data: memberAssessmentsAttributesData,
     isLoading: isAttributesLoading,
   } = useQuery(
-    'memberAssessmentsAttributes',
+    "memberAssessmentsAttributes",
     () => getMemberAssessmentsAttributes(memberId),
     {
       enabled: !!memberId,
@@ -39,20 +46,18 @@ export const useMember = (memberId: number) => {
 
   useEffect(() => {
     if (memberAssessmentsAttributesData) {
-      setMemberAttributes(memberAssessmentsAttributesData.data);
+      setCriteries(memberAssessmentsAttributesData.data);
     }
   }, [memberAssessmentsAttributesData]);
 
   const handleChange = useCallback(
-    (
-      e: ChangeEvent<HTMLInputElement>,
-      attribute: IMemberAssessmentsAttributes
-    ) => {
+    (e: ChangeEvent<HTMLInputElement>, attribute: any) => {
       const newScore = Number(e.target.value);
       const oldScore = attribute.score || 0;
+
       setTotalScore(totalScore + newScore - oldScore);
-      setMemberAttributes((prevMemberAttributes) =>
-        prevMemberAttributes.map((attr) =>
+      setCriteries((prevMemberAttributes: any) =>
+        prevMemberAttributes.map((attr: any) =>
           attr.name === attribute.name ? { ...attr, score: newScore } : attr
         )
       );
@@ -63,7 +68,7 @@ export const useMember = (memberId: number) => {
   return {
     member: memberData?.data,
     memberPhotos: memberPhotosData?.data,
-    memberAttributes: memberAttributes,
+    memberAttributes: criteries,
     totalScore,
     isLoading: isPhotosLoading || isMemberLoading || isAttributesLoading,
     handleChange,

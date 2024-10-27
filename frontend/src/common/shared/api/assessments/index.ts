@@ -10,7 +10,9 @@ export const getMemberAssessmentsAttributes = (
     ENDPOINTS.ASSESSMENTS.ATTRIBUTE + "?nomination__nom__categ__id=" + memberId
   );
 
-export const setMemberResults = (data: IResult): AxiosPromise<IResult> =>
+export const setMemberResults = (
+  data: Partial<IResult>
+): AxiosPromise<IResult> =>
   axiosInstanse.post(ENDPOINTS.ASSESSMENTS.RESULTS, data);
 
 export const getMemberResults = (workId: number): AxiosPromise<IResult[]> =>

@@ -5,9 +5,12 @@ import { declineNumberOfBalls } from "common/shared/helpers";
 import cn from "classnames";
 
 export const MemberCard: FC<any> = ({ member: work }) => {
-  const { preview, id, result_sum, is_mine, is_done, is_my_mark } = work;
+  const { preview, id, result_sum, is_filled_mine, is_done, is_my_mark } = work;
 
   const memberLink = () => {
+    if (is_filled_mine) {
+      return `/member-result/${id}`;
+    }
     if (preview && !is_my_mark) {
       return `/member-evaluation/${id}`;
     }
@@ -15,7 +18,7 @@ export const MemberCard: FC<any> = ({ member: work }) => {
   };
 
   const memberPoints = () => {
-    if (!is_my_mark && !is_mine) {
+    if (!is_my_mark && !is_filled_mine) {
       return "оцените работу";
     }
     if (result_sum) {
@@ -33,6 +36,7 @@ export const MemberCard: FC<any> = ({ member: work }) => {
           <Link
             href={memberLink()}
             className={cn(styles.members__content, {
+              [styles.members__content_other]: is_filled_mine,
               [styles.members__content_done]: is_done && is_my_mark,
             })}
           >

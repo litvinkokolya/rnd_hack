@@ -22,8 +22,6 @@ export const ShowChallenge = ({
   const [user, setUser] = useAtom(userAtom);
   const [_selectedChamp, setSelectedChamp] = useAtom(champAtom);
 
-  isOpen && console.log(champ);
-
   const setMemberChallenge = async (params: any) => {
     try {
       const { data } = await setMember(params);
@@ -46,6 +44,7 @@ export const ShowChallenge = ({
     const work = await setWork({ event: champ.id, member: data?.id });
     //@ts-ignore
     setUser({ ...user!, memberId: data.id, workId: work.data.id });
+    router.push("./profile");
   });
 
   return (
@@ -142,7 +141,6 @@ export const ShowChallenge = ({
                 onClick={() => {
                   loginUserMutation.mutate();
                   setSelectedChamp(champ);
-                  router.push("./profile");
                 }}
               >
                 Принять участие

@@ -21,6 +21,7 @@ export interface IChamp {
   role: string;
   image: string;
   count_photo: string;
+  criteries: string[];
 }
 
 export interface ChampCardProps {

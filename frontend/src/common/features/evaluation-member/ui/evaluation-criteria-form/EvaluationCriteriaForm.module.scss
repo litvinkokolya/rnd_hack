@@ -1,4 +1,4 @@
-@import '../../../../shared/styles/variables.scss';
+@import "../../../../shared/styles/variables.scss";
 .evaluation {
   &__criteria_box {
     display: flex;
@@ -55,7 +55,7 @@
       position: relative;
 
       &::after {
-        content: '';
+        content: "";
         background-color: rgba(149, 149, 149, 0.16);
         width: 1px;
         height: 20px;
@@ -68,7 +68,7 @@
     &:checked + span {
       border-radius: 5px;
       color: #fff;
-      background-color: #ff3e9b;
+      background-color: #ff8400;
       opacity: 0.699999988079071;
     }
   }

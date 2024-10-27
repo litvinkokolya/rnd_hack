@@ -7,7 +7,6 @@ export const MemberPhotosList = ({
 }: {
   memberPhotos: IPhoto[] | undefined;
 }) => {
-  console.log(memberPhotos);
   return (
     <>
       {memberPhotos && (

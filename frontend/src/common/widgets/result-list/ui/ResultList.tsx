@@ -10,6 +10,7 @@ import { IResult } from "common/features/evaluation-member/lib";
 
 export const ResultList = () => {
   const router = useRouter();
+  const { memberId: id } = router.query;
   const workId = Number(router.query.memberId);
 
   const { data: resultData, isLoading: resultDataDataIsLoading } = useQuery(
@@ -28,9 +29,11 @@ export const ResultList = () => {
       enabled: !!workId,
     });
 
+  console.log(resultData?.data);
+
   const criteries = useMemo(() => {
-    return resultData?.data[0]?.score_retail
-      ? Object.keys(resultData.data[0].score_retail)
+    return resultData?.data[0]?.score
+      ? Object.keys(resultData.data[0].score)
       : [];
   }, [resultData]);
 
@@ -40,7 +43,11 @@ export const ResultList = () => {
 
   return (
     <>
-      <MemberPhotosList memberPhotos={memberPhotosData?.data} />
+      <MemberPhotosList
+        memberPhotos={memberPhotosData?.data.filter(
+          (item: any) => item.work.id == id
+        )}
+      />
       {!!resultData?.data.length ? (
         <>
           <div className={styles.result__box}>
@@ -52,7 +59,8 @@ export const ResultList = () => {
                     {resultData?.data.map(
                       (item: IResult, itemIndex: number) => (
                         <div key={itemIndex}>
-                          <span>{item.score_retail![criteria]}</span>
+                          {/* @ts-ignore */}
+                          <span>{item.score![criteria]}</span>
                           {index === criteries.length - 1 && (
                             <p className={styles.result__staff}>
                               {item.event_staff_name}
