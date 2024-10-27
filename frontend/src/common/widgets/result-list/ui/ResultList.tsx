@@ -63,7 +63,8 @@ export const ResultList = () => {
                           <span>{item.score![criteria]}</span>
                           {index === criteries.length - 1 && (
                             <p className={styles.result__staff}>
-                              {item.event_staff_name}
+                              {/* @ts-ignore */}
+                              {item.full_name_reviewer}
                             </p>
                           )}
                         </div>

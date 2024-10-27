@@ -11,7 +11,6 @@ export const ChampCard = ({ champ, disableChamp }: ChampCardProps) => {
 
   return (
     <>
-      {" "}
       <div className={styles.champs__item}>
         <button
           disabled={isButtonDisabled}

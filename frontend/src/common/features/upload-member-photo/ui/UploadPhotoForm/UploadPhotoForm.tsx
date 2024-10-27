@@ -10,12 +10,12 @@ import {
 } from "common/features/upload-member-photo/model";
 import Link from "next/link";
 import { BEAUTY_RANK_BOT } from "common/shared/api/endpoints";
-import { champAtom } from "store";
+import { champAtom, userAtom } from "store";
 import { useAtomValue } from "jotai";
 
 const UploadPhotoForm = () => {
   const router = useRouter();
-  const memberId = Number(router.query.memberId);
+  const user = useAtomValue(userAtom);
   const champ = useAtomValue(champAtom);
 
   const [selectedFiles, setSelectedFiles] = useState<any[]>(
@@ -53,7 +53,7 @@ const UploadPhotoForm = () => {
       </form>
       <Link
         target="_blank"
-        href={`${BEAUTY_RANK_BOT}${memberId}`}
+        href={`${BEAUTY_RANK_BOT}${user?.workId}`}
         className={styles.upload_photo__video_link}
       >
         Загрузить Видео

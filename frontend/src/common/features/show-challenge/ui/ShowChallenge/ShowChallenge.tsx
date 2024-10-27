@@ -44,7 +44,8 @@ export const ShowChallenge = ({
     const work = await setWork({ event: champ.id, member: data?.id });
     //@ts-ignore
     setUser({ ...user!, memberId: data.id, workId: work.data.id });
-    router.push("./profile");
+    router.push("./profile?challenge=" + champ.id);
+    setSelectedChamp(champ);
   });
 
   return (
@@ -130,7 +131,7 @@ export const ShowChallenge = ({
                 <Button
                   onClick={() => {
                     setSelectedChamp(champ);
-                    router.push("./profile");
+                    router.push("./profile?challenge=" + champ.id);
                   }}
                 >
                   Перейти в челлендж
@@ -140,7 +141,6 @@ export const ShowChallenge = ({
               <Button
                 onClick={() => {
                   loginUserMutation.mutate();
-                  setSelectedChamp(champ);
                 }}
               >
                 Принять участие
