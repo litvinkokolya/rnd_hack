@@ -18,6 +18,9 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     filter_backends = (OrderingFilter, DjangoFilterBackend, SearchFilter)
 
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return EventCreateSerializer

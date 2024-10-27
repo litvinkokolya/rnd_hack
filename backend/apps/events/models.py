@@ -133,6 +133,15 @@ class Event(models.Model):
         verbose_name="Завершено",
         help_text="Укажите, завершено ли событие"
     )
+    created_by = models.ForeignKey(
+        'users.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='created_events',
+        verbose_name="Создатель",
+        help_text="Пользователь, который создал событие"
+    )
 
     class Meta:
         verbose_name = "Челлендж"
@@ -145,8 +154,6 @@ class Event(models.Model):
             return
 
         winner_work = max(works, key=lambda work: work.result_sum)
-
-        print(winner_work)
 
         winner_member = winner_work.member
         winner_member.winner = True
