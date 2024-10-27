@@ -120,6 +120,11 @@ class ResultSerializer(serializers.ModelSerializer):
     work = WorkSerializer()
     reviewer = MemberSerializer()
 
+    full_name_reviewer = serializers.SerializerMethodField()
+
+    def get_full_name_reviewer(self, obj) -> str:
+        return obj.reviewer.user.get_full_name()
+
     class Meta:
         model = Result
         fields = '__all__'
