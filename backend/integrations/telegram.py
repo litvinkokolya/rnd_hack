@@ -12,7 +12,7 @@ class TelegramIntegration:
         message = self.telegram.send_video(
             settings.TELEGRAM_CHAT_ID,
             instance.url_video,
-            caption=f" Челлендж {event}! \nНомер твоей работы - {instance.id}. \nЖелаем удачи!",
+            caption=f" Челлендж {event}! \nНомер работы - {instance.id}!",
         )
         instance.url_message_video = f"https://t.me/ChallengeArenaVideo/{message.id}"
         instance.save()

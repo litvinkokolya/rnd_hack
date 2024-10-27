@@ -139,8 +139,18 @@ class Event(models.Model):
         verbose_name_plural = "Челленджи"
 
     def find_winner(self):
-        results = Result.objects.filter(work__event=self)
-        #TODO: дописать когда будет известно что будет приходить в result.result
+        works = Work.objects.filter(event__pk=self.pk)
+
+        if not works.exists():
+            return
+
+        winner_work = max(works, key=lambda work: work.result_sum)
+
+        print(winner_work)
+
+        winner_member = winner_work.member
+        winner_member.winner = True
+        winner_member.save()
 
     def give_achievements(self):
         members = self.member.all()
@@ -149,6 +159,12 @@ class Event(models.Model):
                 member.user.achievements.add(self.achievement_winner)
             else:
                 member.user.achievements.add(self.achievement_member)
+
+    def save(self, *args, **kwargs):
+        if self.is_finished:
+            self.find_winner()
+            self.give_achievements()
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.name if self.name else 'Укажи name!!!'
@@ -305,13 +321,6 @@ class Result(models.Model):
     class Meta:
         verbose_name = "Результат"
         verbose_name_plural = "Результаты"
-
-
-@receiver(post_save, sender=Event)
-def determine_achievements(sender, instance, created, **kwargs):
-    if instance.is_finished:
-        instance.find_winner()
-        instance.give_achievements()
 
 
 @receiver(post_save, sender=Result)

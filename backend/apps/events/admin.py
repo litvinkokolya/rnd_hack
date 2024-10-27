@@ -12,7 +12,14 @@ class AchievementAdmin(admin.ModelAdmin):
 class EventAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'max_members', 'for_whom', 'count_photo', 'prize', 'is_video', 'created_date', 'end_date', 'is_finished')
     list_filter = ('for_whom', 'is_video', 'is_finished')
+    actions = ["make_finished"]
     search_fields = ('name', 'description', 'prize')
+
+    @admin.action(description="Завершить челлендж")
+    def make_finished(self, request, queryset):
+        queryset.update(is_finished=True)
+        for event in queryset:
+            event.save()
 
 
 @admin.register(Member)

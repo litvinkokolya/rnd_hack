@@ -12,6 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
             "last_name",
             "phone_number",
             "about_me",
+            "achievements",
             "image",
         )
         read_only_fields = ["id"]
