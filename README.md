@@ -22,13 +22,20 @@
      venv\Scripts\activate
      ```
 
-3. **Navigate to the scripts directory and activate `init_backend`:**
+3. **Install requirements:**
+   ```sh
+   pip install -r requirements.txt
+   ```
+Please depending on your system, uncomment the dependency you need!
+(check requirements.txt)
+
+4. **Navigate to the scripts directory and activate `init_backend`:**
    ```sh
    cd scripts
    ./init_backend
    ```
 
-4. **Create .env files in `backend` and `telegram bot` Directories:**
+5. **Create .env files in `backend` and `telegram bot` Directories:**
    ```
    See examples (.env.example) in directories!
    ```
@@ -36,7 +43,12 @@
 
 ## Frontend
 
-*Insert instructions from Sasha here.*
+1. **Need you to install `yarn` (packet manager)**
+2. **Navigate to the frontend Directory:**
+   ```sh
+   cd frontend
+   yarn
+   ```
 
 ## Running the Project
 
@@ -83,7 +95,7 @@
 
 ## Additional Information
 
-*Если вы все таки это читаете - привет от BeautyRetards!*
+*Если вы это читаете - привет от BeautyRetards!*
 
 ---
 
