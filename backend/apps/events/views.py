@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 from .models import Achievement, Event, Member, Work, ImagesWork, Result
-from .permissions import TelegramBotUpdate
+from .permissions import AuthenticatedOrTelegramBot
 from .serializers import AchievementSerializer, EventSerializer, MemberSerializer, WorkSerializer, ImagesWorkSerializer, \
     ResultSerializer, EventCreateSerializer, WorkCreateSerializer, ImagesWorkCreateSerializer, ResultCreateSerializer
 
@@ -23,10 +23,6 @@ class EventViewSet(viewsets.ModelViewSet):
             return EventCreateSerializer
         return EventSerializer
 
-#   @action(methods=['get'], detail=True, url_path='print', url_name='print')
-#       def print_form(self, request, *args, **kwargs):
-#       TODO: когда будет известен result поле у Result сделать отправку excel
-
 
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all()
@@ -38,7 +34,7 @@ class WorkViewSet(viewsets.ModelViewSet):
     queryset = Work.objects.all()
     filterset_fields = ["event"]
     filter_backends = (OrderingFilter, DjangoFilterBackend, SearchFilter)
-    permission_classes = [TelegramBotUpdate]
+    permission_classes = [AuthenticatedOrTelegramBot]
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
